@@ -221,7 +221,7 @@
     const GITHUB_TOKEN = ''; 
 
     // State Management
-    let currentFolder = 'February';
+    let currentFolder = '';
     let currentChaptersList = []; // Menyimpan daftar file chapter saat ini
     let currentChapterIndex = -1; // Indeks chapter yang sedang dibuka
 
@@ -247,7 +247,7 @@
     }
 
     async function init() {
-        const files = await fetchGitHubFiles('Novels');
+        const files = await fetchGitHubFiles('February');
         const container = document.getElementById('folder-container');
         container.innerHTML = '';
 
