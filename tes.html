@@ -12,8 +12,9 @@
             --text-secondary: #666666;
             --accent-color: #2c3e50;
             --link-color: #3498db;
-            --font-size-base: 18px; /* Ukuran font dasar untuk keterbacaan */
-            --font-size-content: 20px; /* Ukuran font khusus konten novel */
+            --btn-disabled: #ccc;
+            --font-size-base: 18px;
+            --font-size-content: 20px;
         }
 
         body {
@@ -46,8 +47,8 @@
         }
 
         /* Navigasi Folder */
-        .folder-list {
-            list-style: none;            padding: 0;
+        .folder-list {            list-style: none;
+            padding: 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
@@ -92,23 +93,59 @@
 
         /* Area Baca Novel */
         #reader-view {
-            display: none; /* Sembunyikan default */
+            display: none;
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);            margin-top: 20px;
+            border-radius: 8px;            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-top: 20px;
         }
 
         .content-text {
             font-size: var(--font-size-content);
-            white-space: pre-wrap; /* Menjaga format baris baru dari txt */
+            white-space: pre-wrap;
             color: #222;
+            min-height: 300px;
+        }
+
+        /* Tombol Navigasi */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background-color: var(--link-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            flex: 1;
+            transition: background 0.2s, opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-nav:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-nav:disabled {
+            background-color: var(--btn-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .btn-back {
             background-color: var(--accent-color);
-            color: white;
-            border: none;
+            color: white;            border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -121,12 +158,19 @@
         .loading { text-align: center; color: var(--text-secondary); font-style: italic; }
         .error { color: #e74c3c; text-align: center; padding: 20px; }
 
-        /* Responsive Mobile */
         @media (max-width: 600px) {
             .container { padding: 15px; }
             .folder-list { grid-template-columns: 1fr 1fr; }
             #reader-view { padding: 20px; }
             :root { --font-size-content: 18px; }
+            
+            .nav-controls {
+                flex-direction: column;
+            }
+            .btn-nav {
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
@@ -145,19 +189,26 @@
         </div>
     </div>
 
-    <!-- View Sekunder: Daftar Bab dalam Folder -->    <div id="chapters-view" style="display:none;">
+    <!-- View Sekunder: Daftar Bab -->
+    <div id="chapters-view" style="display:none;">
         <button class="btn-back" onclick="goHome()">← Kembali ke Daftar Novel</button>
         <h2 id="current-novel-title">Daftar Bab</h2>
         <ul id="chapter-container" class="chapter-list">
-            <p class="loading">Memuat daftar bab...</p>
-        </ul>
+            <p class="loading">Memuat daftar bab...</p>        </ul>
     </div>
 
-    <!-- View Membaca: Konten Text -->
+    <!-- View Membaca: Konten Text + Pagination -->
     <div id="reader-view">
         <button class="btn-back" onclick="closeReader()">← Kembali ke Daftar Bab</button>
         <h2 id="reader-title">Judul Bab</h2>
-        <div id="reader-content" class="content-text"></div>
+        
+        <div id="reader-content" class="content-text">Memuat konten...</div>
+
+        <!-- Kontrol Prev/Next -->
+        <div class="nav-controls">
+            <button id="btn-prev" class="btn-nav" onclick="loadAdjacentChapter(-1)">← Bab Sebelumnya</button>
+            <button id="btn-next" class="btn-nav" onclick="loadAdjacentChapter(1)">Bab Selanjutnya →</button>
+        </div>
     </div>
 </div>
 
@@ -165,19 +216,17 @@
     // KONFIGURASI USER
     const GITHUB_USERNAME = 'planet-99'; // GANTI DENGAN USERNAME GITHUB ANDA
     const REPO_NAME = 'quora'; // GANTI DENGAN NAMA REPOSITORY
-    const PATH_ROOT = 'February'; // Kosongkan jika file ada di root, atau isi 'Novels' jika ingin langsung masuk folder Novels
     
-    // Opsional: Masukkan Token GitHub jika mengalami rate limit atau repo privat
-    const GITHUB_TOKEN = ''; // Contoh: 'ghp_xxxxxxxxxxxxx'
+    // Opsional: Token GitHub
+    const GITHUB_TOKEN = ''; 
 
     // State Management
     let currentFolder = '';
-    let allFiles = [];
+    let currentChaptersList = []; // Menyimpan daftar file chapter saat ini
+    let currentChapterIndex = -1; // Indeks chapter yang sedang dibuka
 
-    // Fungsi Fetch Data dari GitHub API
     async function fetchGitHubFiles(path = '') {
         const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${path}`;
-        
         const headers = {};
         if (GITHUB_TOKEN) {
             headers['Authorization'] = `token ${GITHUB_TOKEN}`;
@@ -185,26 +234,20 @@
 
         try {
             const response = await fetch(url, { headers });
-            
             if (!response.ok) {
-                if (response.status === 403) throw new Error("Rate limit exceeded. Please add a GitHub Token.");
-                if (response.status === 404) throw new Error("Repository or path not found.");
+                if (response.status === 403) throw new Error("Rate limit exceeded. Silakan tambahkan GitHub Token.");
+                if (response.status === 404) throw new Error("Repository atau path tidak ditemukan.");
                 throw new Error(`Error: ${response.statusText}`);
             }
-
             return await response.json();
         } catch (error) {
-            console.error(error);            document.getElementById('folder-container').innerHTML = `<p class="error">${error.message}</p>`;
-            return [];
-        }
+            console.error(error);
+            document.getElementById('folder-container').innerHTML = `<p class="error">${error.message}</p>`;
+            return [];        }
     }
 
-    // Inisialisasi: Ambil daftar folder utama (Novels)
     async function init() {
-        // Kita ambil root dulu untuk mencari folder 'Novels' atau langsung list jika struktur berbeda
-        // Sesuai permintaan: /Novels/ adalah folder utama.
-        const files = await fetchGitHubFiles('February');
-        
+        const files = await fetchGitHubFiles('Novels');
         const container = document.getElementById('folder-container');
         container.innerHTML = '';
 
@@ -213,9 +256,7 @@
             return;
         }
 
-        // Filter hanya folder (type: dir)
         const folders = files.filter(file => file.type === 'dir');
-
         folders.forEach(folder => {
             const div = document.createElement('div');
             div.className = 'folder-item';
@@ -225,7 +266,6 @@
         });
     }
 
-    // Load Daftar Bab dalam sebuah Novel
     async function loadChapters(folderPath, folderName) {
         currentFolder = folderPath;
         document.getElementById('main-view').style.display = 'none';
@@ -238,48 +278,101 @@
         const files = await fetchGitHubFiles(folderPath);
         container.innerHTML = '';
 
-        // Filter hanya file .txt
+        // Filter .txt dan Sortir
         const txtFiles = files
             .filter(file => file.type === 'file' && file.name.endsWith('.txt'))
-            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })); // Sortir alami (Bab 1, Bab 2, Bab 10)
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
 
-        if (txtFiles.length === 0) {            container.innerHTML = '<p>Belum ada bab yang tersedia.</p>';
-            return;
-        }
+        // Simpan ke state global untuk digunakan oleh tombol Next/Prev
+        currentChaptersList = txtFiles.map(file => ({
+            name: file.name,
+            cleanName: file.name.replace('.txt', '').replace(/_/g, ' '),
+            url: file.download_url
+        }));
 
-        txtFiles.forEach(file => {
+        if (currentChaptersList.length === 0) {
+            container.innerHTML = '<p>Belum ada bab yang tersedia.</p>';
+            return;        }
+
+        currentChaptersList.forEach((file, index) => {
             const li = document.createElement('li');
             li.className = 'chapter-item';
-            // Hapus ekstensi .txt untuk tampilan judul yang lebih bersih
-            const cleanName = file.name.replace('.txt', '').replace(/_/g, ' '); 
-            li.textContent = cleanName;
-            li.onclick = () => readChapter(file.download_url, cleanName);
+            li.textContent = file.cleanName;
+            li.onclick = () => readChapterByIndex(index);
             container.appendChild(li);
         });
     }
 
-    // Baca Isi Bab
-    async function readChapter(url, title) {
+    // Fungsi baru: Membaca berdasarkan indeks array
+    function readChapterByIndex(index) {
+        if (index < 0 || index >= currentChaptersList.length) return;
+        
+        currentChapterIndex = index;
+        const chapterData = currentChaptersList[index];
+        
+        renderReaderView(chapterData.cleanName, chapterData.url);
+    }
+
+    async function renderReaderView(title, url) {
         document.getElementById('chapters-view').style.display = 'none';
         document.getElementById('reader-view').style.display = 'block';
         document.getElementById('reader-title').textContent = title;
-        document.getElementById('reader-content').textContent = 'Memuat konten...';
+        
+        const contentDiv = document.getElementById('reader-content');
+        contentDiv.textContent = 'Memuat konten...';
+        
+        // Scroll ke atas setiap kali membuka bab baru
+        window.scrollTo(0, 0);
+
+        updateNavButtons();
 
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error('Gagal mengambil konten');
             const text = await response.text();
-            document.getElementById('reader-content').textContent = text;
+            contentDiv.textContent = text;
         } catch (error) {
-            document.getElementById('reader-content').textContent = 'Gagal memuat konten bab.';
+            contentDiv.textContent = 'Gagal memuat konten bab.';
         }
     }
 
-    // Navigasi
+    // Fungsi Navigasi Prev/Next
+    function loadAdjacentChapter(direction) {
+        const newIndex = currentChapterIndex + direction;
+        if (newIndex >= 0 && newIndex < currentChaptersList.length) {
+            readChapterByIndex(newIndex);
+        }    }
+
+    // Update status tombol (Enable/Disable)
+    function updateNavButtons() {
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        // Disable tombol Prev jika di awal
+        if (currentChapterIndex <= 0) {
+            btnPrev.disabled = true;
+            btnPrev.textContent = "← Bab Pertama";
+        } else {
+            btnPrev.disabled = false;
+            btnPrev.textContent = "← Bab Sebelumnya";
+        }
+
+        // Disable tombol Next jika di akhir
+        if (currentChapterIndex >= currentChaptersList.length - 1) {
+            btnNext.disabled = true;
+            btnNext.textContent = "Bab Terakhir →";
+        } else {
+            btnNext.disabled = false;
+            btnNext.textContent = "Bab Selanjutnya →";
+        }
+    }
+
     function goHome() {
         document.getElementById('chapters-view').style.display = 'none';
         document.getElementById('main-view').style.display = 'block';
         currentFolder = '';
+        currentChaptersList = [];
+        currentChapterIndex = -1;
     }
 
     function closeReader() {
@@ -287,9 +380,8 @@
         document.getElementById('chapters-view').style.display = 'block';
     }
 
-    // Jalankan saat halaman dimuat
     init();
-
 </script>
 
-</body></html>
+</body>
+</html>
