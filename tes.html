@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pustaka Novel Rad</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --accent-color: #2c3e50;
+            --link-color: #3498db;
+            --font-size-base: 18px; /* Ukuran font dasar untuk keterbacaan */
+            --font-size-content: 20px; /* Ukuran font khusus konten novel */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; }
+        h2 { font-size: 1.2rem; color: var(--accent-color); border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem;}
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigasi Folder */
+        .folder-list {
+            list-style: none;            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .folder-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .folder-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Daftar Bab */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: var(--card-bg);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            border-left: 5px solid var(--link-color);
+            transition: background 0.2s;
+        }
+
+        .chapter-item:hover {
+            background-color: #eef7ff;
+        }
+
+        /* Area Baca Novel */
+        #reader-view {
+            display: none; /* Sembunyikan default */
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);            margin-top: 20px;
+        }
+
+        .content-text {
+            font-size: var(--font-size-content);
+            white-space: pre-wrap; /* Menjaga format baris baru dari txt */
+            color: #222;
+        }
+
+        .btn-back {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-back:hover { opacity: 0.9; }
+
+        .loading { text-align: center; color: var(--text-secondary); font-style: italic; }
+        .error { color: #e74c3c; text-align: center; padding: 20px; }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            .folder-list { grid-template-columns: 1fr 1fr; }
+            #reader-view { padding: 20px; }
+            :root { --font-size-content: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 id="header-title">Pustaka Novel</h1>
+</header>
+
+<div class="container">
+    <!-- View Utama: Daftar Folder -->
+    <div id="main-view">
+        <h2>Pilih Novel</h2>
+        <div id="folder-container" class="folder-list">
+            <p class="loading">Memuat daftar novel...</p>
+        </div>
+    </div>
+
+    <!-- View Sekunder: Daftar Bab dalam Folder -->    <div id="chapters-view" style="display:none;">
+        <button class="btn-back" onclick="goHome()">← Kembali ke Daftar Novel</button>
+        <h2 id="current-novel-title">Daftar Bab</h2>
+        <ul id="chapter-container" class="chapter-list">
+            <p class="loading">Memuat daftar bab...</p>
+        </ul>
+    </div>
+
+    <!-- View Membaca: Konten Text -->
+    <div id="reader-view">
+        <button class="btn-back" onclick="closeReader()">← Kembali ke Daftar Bab</button>
+        <h2 id="reader-title">Judul Bab</h2>
+        <div id="reader-content" class="content-text"></div>
+    </div>
+</div>
+
+<script>
+    // KONFIGURASI USER
+    const GITHUB_USERNAME = 'planet-99'; // GANTI DENGAN USERNAME GITHUB ANDA
+    const REPO_NAME = 'quora'; // GANTI DENGAN NAMA REPOSITORY
+    const PATH_ROOT = 'February'; // Kosongkan jika file ada di root, atau isi 'Novels' jika ingin langsung masuk folder Novels
+    
+    // Opsional: Masukkan Token GitHub jika mengalami rate limit atau repo privat
+    const GITHUB_TOKEN = ''; // Contoh: 'ghp_xxxxxxxxxxxxx'
+
+    // State Management
+    let currentFolder = '';
+    let allFiles = [];
+
+    // Fungsi Fetch Data dari GitHub API
+    async function fetchGitHubFiles(path = '') {
+        const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${path}`;
+        
+        const headers = {};
+        if (GITHUB_TOKEN) {
+            headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+        }
+
+        try {
+            const response = await fetch(url, { headers });
+            
+            if (!response.ok) {
+                if (response.status === 403) throw new Error("Rate limit exceeded. Please add a GitHub Token.");
+                if (response.status === 404) throw new Error("Repository or path not found.");
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error(error);            document.getElementById('folder-container').innerHTML = `<p class="error">${error.message}</p>`;
+            return [];
+        }
+    }
+
+    // Inisialisasi: Ambil daftar folder utama (Novels)
+    async function init() {
+        // Kita ambil root dulu untuk mencari folder 'Novels' atau langsung list jika struktur berbeda
+        // Sesuai permintaan: /Novels/ adalah folder utama.
+        const files = await fetchGitHubFiles('quora');
+        
+        const container = document.getElementById('folder-container');
+        container.innerHTML = '';
+
+        if (files.length === 0) {
+            container.innerHTML = '<p>Tidak ada folder novel ditemukan.</p>';
+            return;
+        }
+
+        // Filter hanya folder (type: dir)
+        const folders = files.filter(file => file.type === 'dir');
+
+        folders.forEach(folder => {
+            const div = document.createElement('div');
+            div.className = 'folder-item';
+            div.textContent = folder.name;
+            div.onclick = () => loadChapters(folder.path, folder.name);
+            container.appendChild(div);
+        });
+    }
+
+    // Load Daftar Bab dalam sebuah Novel
+    async function loadChapters(folderPath, folderName) {
+        currentFolder = folderPath;
+        document.getElementById('main-view').style.display = 'none';
+        document.getElementById('chapters-view').style.display = 'block';
+        document.getElementById('current-novel-title').textContent = `Novel: ${folderName}`;
+        
+        const container = document.getElementById('chapter-container');
+        container.innerHTML = '<p class="loading">Memuat bab...</p>';
+
+        const files = await fetchGitHubFiles(folderPath);
+        container.innerHTML = '';
+
+        // Filter hanya file .txt
+        const txtFiles = files
+            .filter(file => file.type === 'file' && file.name.endsWith('.txt'))
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })); // Sortir alami (Bab 1, Bab 2, Bab 10)
+
+        if (txtFiles.length === 0) {            container.innerHTML = '<p>Belum ada bab yang tersedia.</p>';
+            return;
+        }
+
+        txtFiles.forEach(file => {
+            const li = document.createElement('li');
+            li.className = 'chapter-item';
+            // Hapus ekstensi .txt untuk tampilan judul yang lebih bersih
+            const cleanName = file.name.replace('.txt', '').replace(/_/g, ' '); 
+            li.textContent = cleanName;
+            li.onclick = () => readChapter(file.download_url, cleanName);
+            container.appendChild(li);
+        });
+    }
+
+    // Baca Isi Bab
+    async function readChapter(url, title) {
+        document.getElementById('chapters-view').style.display = 'none';
+        document.getElementById('reader-view').style.display = 'block';
+        document.getElementById('reader-title').textContent = title;
+        document.getElementById('reader-content').textContent = 'Memuat konten...';
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Gagal mengambil konten');
+            const text = await response.text();
+            document.getElementById('reader-content').textContent = text;
+        } catch (error) {
+            document.getElementById('reader-content').textContent = 'Gagal memuat konten bab.';
+        }
+    }
+
+    // Navigasi
+    function goHome() {
+        document.getElementById('chapters-view').style.display = 'none';
+        document.getElementById('main-view').style.display = 'block';
+        currentFolder = '';
+    }
+
+    function closeReader() {
+        document.getElementById('reader-view').style.display = 'none';
+        document.getElementById('chapters-view').style.display = 'block';
+    }
+
+    // Jalankan saat halaman dimuat
+    init();
+
+</script>
+
+</body></html>
