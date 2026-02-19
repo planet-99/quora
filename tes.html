@@ -203,7 +203,7 @@
     async function init() {
         // Kita ambil root dulu untuk mencari folder 'Novels' atau langsung list jika struktur berbeda
         // Sesuai permintaan: /Novels/ adalah folder utama.
-        const files = await fetchGitHubFiles('quora');
+        const files = await fetchGitHubFiles('February');
         
         const container = document.getElementById('folder-container');
         container.innerHTML = '';
