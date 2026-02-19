@@ -1,0 +1,123 @@
+Judul: “Segitiga Kecil di Jalan Merdeka”
+
+Genre: Slice‑of‑Life remaja
+
+Tema utama: Sin‑Cos‑Tan (trigonometri) – bukan sekadar rumus, melainkan “petunjuk” yang mengarahkan sang MC ke harta tersembunyi dan ke pertanyaan‑pertanyaan misterius berikutnya.
+
+Garis Besar Plot (25 – 35 Bab)
+
+Bab Judul (opsional) Ringkasan Pokok Elemen Trigonometri yang Menonjol Catatan Karakter / Sub‑Plot
+
+1 Langkah Pertama Perkenalan Raka (17 th, siswa SMA jurusan IPA) yang suka gambar kartun dan “main puzzle matematika” di waktu luang. Di kelas, guru matematika memberi “tugas bonus” berupa surat misterius yang berisi: “Jika kau menemukan lokasi dengan menggunakan sin, cos, tan, hadiah menantimu di ujung jalan Merdeka.” Surat menampilkan tiga angka acak → 30°, 45°, 60° (sinyal awal) Menunjukkan hubungan Raka dengan Siti (teman sekelas) dan Dito (saudara ipar yang suka skateboard).
+
+2 Rumus Rahasia Raka menelusuri catatan guru, menemukan buku “Trigonometri untuk Pemula”. Ia mengingat kembali pelajaran sin, cos, tan dari segitiga siku‑siku. Penjelasan singkat sin = opposite/hypotenuse, cos = adjacent/hyp., tan = opposite/adjacent. Raka berusaha menyeimbangkan tugas sekolah, PR, dan “hunt”.
+
+3 Koordinat Pertama Raka mengubah tiga sudut tadi menjadi rasio (sin30 = 0.5, cos45 ≈ 0.707, tan60 ≈ 1.732). Ia menuliskan tiga angka itu pada peta digital. Menyebutkan “tiga rasio = tiga petunjuk”. Siti mengajak Raka ke perpustakaan, memberi buku “Sejarah Jalan Merdeka”.
+
+4 Petunjuk Pertama – Sin Dengan sin30 = 0.5, Raka menyadari bahwa 0.5 dapat menjadi ½ km dari titik A (gerbang utama SMA). Ia berjalan setengah kilometer ke sebelah timur dan menemukan patung “Sinus” (patung kecil ber‑tulisan “SIN”). Patung berisi kode QR → menampilkan angka 7. Siti curiga, menanyakan apa arti “Sin”.
+
+5 Petunjuk Kedua – Cos Cos45 ≈ 0.707 → 707 m dari patung “Sin”. Raka mengukur menggunakan aplikasi peta. Di lokasi, ada grafiti “COS” di dinding sebuah kafe vintage. Grafiti menyimpan teka‑teki: “Jika kamu tahu cos, temukan tangent‑mu”. Dito memberi Raka skateboard untuk “mempercepat” pencarian.
+
+6 Tangent yang Hilang Raka menyadari “tangent” bukan hanya fungsi, melainkan “tanda” (tanda = sign). Ia mencari tanda di sekitar kafe; menemukan tanda panah mengarah ke taman kota. Penjelasan singkat tentang tan = sin/cos → 0.5 / 0.707 ≈ 0.707 (kembali ke angka 707). Siti mengungkapkan ia pernah mendengar tentang “tanda rahasia” guru matematika dulu.
+
+7 Taman Rahasia Di taman, Raka menemukan pohon beringin dengan ukiran TAN pada batang. Di sana terdapat kotak logam terkunci. Kode kotak = 707 (angka yang didapat dari cos). Raka membuka kotak, menemukan peta kecil dan surat pertama: “Selamat, kamu hampir sampai. Lanjutkan dengan sudut berikutnya.”
+
+8 Sudut Kedua – 75° Surat memberi tiga sudut baru: 75°, 120°, 15°. Raka mencatat nilai sin, cos, tan masing‑masing. Sin75 ≈ 0.966, Cos75 ≈ 0.259, Tan75 ≈ 3.732. Raka mulai menulis semua nilai di buku catatan, berusaha menemukan pola.
+
+9 Mimpi di Atas Atap Pada malam hari, Raka bermimpi berada di atap SMA, melihat bayangan yang membentuk segitiga dengan sudut‑sudut tadi. Bangun, ia berpikir “bayangan = shadow = shade = tempat terlindung”. Mengaitkan bayangan dengan cosine law (bayangan = panjang sisi samping). Siti menemaninya pulang, memberi dukungan moral.
+
+10 Jejak Bawah Tanah Raka menemukan jalan setapak di bawah taman (terletak tepat 0,966 km dari titik pertama). Di situ ada pintu besi berlabel “75°”. Kombinasi sin sebagai jarak, cos sebagai arah, tan sebagai sudut pintu. Dito membantu mengangkat pintu yang agak berat.
+
+11 Labirin Gores Di dalam ruang bawah tanah, ada labirin garis yang menyerupai grafik fungsi sin, cos, tan. Raka harus mengikuti grafik sin (gelombang naik‑turun) untuk keluar. Visualisasi fungsi → sin: naik turun, cos: bergeser, tan: asimtot. Raka hampir tersesat, tetapi Siti mengirim pesan “ikuti gelombang”.
+
+12 Penemuan Kunci Di ujung labirin, Raka menemukan kunci berkarat dengan tulisan “120°”. Kunci menjadi pendekatan untuk menghubungkan sudut 120° ke tiga sisi segitiga (120°, 30°, 30°). Raka menyadari bahwa semua petunjuk berputar di sekitar segitiga sama‑sisi.
+
+13 Segitiga di Jalan Merdeka Menggunakan kunci, Raka keluar ke Jalan Merdeka tepat 120 meter di sebelah barat dari patung “Cos”. Di persimpangan terdapat trotoar berbentuk segitiga. Trotoar menampilkan 3 sisi yang sama panjang → simbol 120° (sudut interior segitiga sama‑sisi). Raka bertemu Pak Arif, guru matematika lama, yang memberi nasihat “Setiap sudut ada tujuan”.
+
+14 Puzzle Kios Di kios es krim, penjual memberi Raka kuesioner dengan soal trigonometri sederhana. Jawaban yang tepat memberi kepingan puzzle. Soal: “Jika sinθ = ½, nilai θ apa? → 30° atau 150°.” Raka menebak 30°, mendapat kepingan “gambar peta”.
+
+15 Bersatu, Puzzle Dengan tiga kepingan (peta, gambar, dan potongan logam) Raka menyusun peta akhir yang menunjuk ke taman bermain “Sine Wave”. Ide visual: peta menyerupai grafik sinus. Siti membantu menyatukan kepingan, memperlihatkan arti persahabatan.
+
+16 Tantangan Kedua – 15° Surat misterius (yang tadi ditemukan di kotak) muncul kembali, kali ini menambahkan sudut 15° dan pertanyaan: “Jika kamu menemukan hadiah, apa yang kamu harapkan dari dunia?” Nilai sin15 ≈ 0.259, cos15 ≈ 0.966, tan15 ≈ 0.268. Raka menuliskan jawabannya di buku catatan (untuk nanti dikirim kembali).
+
+17 Jalan Ke “Sine Wave” Menggunakan angka 15°, Raka menghitung jarak 0,259 km dari titik pergantian sin ke cos. Ia sampai di taman bermain yang memiliki jalur berwarna biru menyerupai gelombang sinus. Jalan biru = “gelombang sin”. Dito mengajak Raka naik sepeda di jalur tersebut (menambah aksi ringan).
+
+18 Taman Bermain “Sine Wave” Di pusat taman, terdapat kotak kayu berukir “SIN‑COS‑TAN”. Di dalamnya ada kotak besi kecil terkunci, namun terdapat lubang berbentuk segitiga. Lubang segitiga → cocok dengan kunci “120°”. Raka memasukkan kunci, membuka kotak, menemukan buku harian milik orang misterius (yang menandai “M”).
+
+19 Buku Harian “M” Buku berisi catatan tentang “M = Mimpi, Misi, Masa Depan”. Ada pertanyaan: “Apakah kamu siap menerima M selanjutnya? Hitung sin, cos, tan–mu!” Raka menandai nilai sin, cos, tan yang ia gunakan selama pencarian. Raka merasa semakin terhubung dengan si misterius – identitas belum terungkap.
+
+20 Hadiah Terungkap Di dalam kotak terdapat segelap kristal biru (berkilau seperti gelombang). Bersama kristal ada surat: “Selamat! Ini hadiah pertamamu—Kompas Trigonometri. Dengan ini, tiap arah menjadi sudut baru. Pertanyaan selanjutnya ada di belakang surat.” Kompas ber 360° dengan label sin‑cos‑tan pada tiap 30° (mengganti arah mata angin). Raka berterima kasih pada Siti & Dito yang telah mendukung.
+
+21 Pertanyaan Baru Surat di belakang: “Jika kamu berada di persimpangan tiga jalan yang masing‑masing menghadap 0°, 120°, 240°, ke mana kamu akan pergi jika sin = cos? Jawab, dan kau akan menemukan…”. Menimbang sin = cos → 45° (atau 225°). Raka memutuskan untuk mengejar jalan 45° (di arah timur‑utara).
+
+22 Pencarian Jalan 45° Menggunakan kompas, Raka berjalan 500 m menuju arah 45°. Di sana terdapat kafe “Tan” dengan musik jazz. Nama kafe berhubungan dengan fungsi tan (menggambarkan “tangan” yang menuntun). Di dalam, Raka bertemu Nadia, seorang mahasiswi ilmu komputer yang suka matematika; ia menjadi “bantuan teknis”.
+
+23 Teka‑Teki “Tan” Nadia memberi Raka “puzzle tan” berupa suku Fibonacci yang di‑transformasi menjadi 1 : tan θ = 1 : 3/4 → θ ≈ 36,87°. Raka harus menemukan “titik” yang berada pada jarak 37 m dari kafe. Hubungan antara rasio tan dan jarak fisik. Raka menemukan bilik kecil di belakang kafe, penuh buku catatan orang misterius.
+
+24 Bilik Misteri Di bilik terdapat tumpukan surat serupa, masing‑masing berisi soal trigonometri lanjutan (identitas, hukum sudut, dll.). Raka menandai satu yang paling sulit: “Jika sin α + cos β = 1, apa nilai α + β?”. Menstimulasi pembaca dengan soal “bonus”. Raka menuliskan jawabannya, menunggu reaksi “pengirim”.
+
+25 Balasan Misterius Saat Raka menutup bilik, sebuah kertas kuning muncul dari sela buku: “Kerjakan soal, kirim jawabannya ke email: m@sincos.tan. Jika benar, hadiah berikutnya menunggu di puncak menara jam kota.” Menambah dimensi modern (email). Raka mengirim jawaban (α=30°, β=60° → α+β=90°).
+
+26 Puncak Menara Jam Raka dan teman‑temannya (Siti, Dito, Nadia) naik menara jam (menara bersejarah di pusat kota). Di puncak terdapat kotak besi berlabel “90°”. Sudut 90° = sin = 1 → “puncak pencapaian”. Kotak terbuka, memperlihatkan buku sketsa dan kunci USB.
+
+27 File USB “M” USB berisi video rekaman orang misterius (suara netral, tidak terlihat). Ia memperkenalkan dirinya sebagai “Mentor”—seorang pensyarah dulu yang menyukai puzzle untuk menginspirasi generasi muda. Ia menjelaskan tujuan: “Menciptakan jaringan pencari yang berpikir kritis.” Menghubungkan tema sin‑cos‑tan dengan “mentor”. Raka merasa terinspirasi, menuliskan niatnya menjadi pengajar.
+
+28 Hadiah Terakhir Di dalam video, Mentor memberi voucher beasiswa untuk kursus “Matematika Terapan & Game Design”. Raka menerima, bersama surat: “Selamat! Jadilah ‘Pembimbing’ berikutnya.” “Sin” → sinyal (menyebar); “Cos” → ko‑sine (bekerjasama); “Tan” → tangga (naik ke tingkat selanjutnya). Siti berjanji membantu Raka persiapkan proyek game edukatif.
+
+29 Rintisan Baru Raka mulai mengerjakan game edukasi berbasis trigonometri, menambahkan level “Sin‑Cos‑Tan Quest”. Ia mengundang teman‑temannya untuk uji coba. Game menjadi “pengulangan” siklus puzzle → melanjutkan cerita. Dito menjadi beta‑tester, Nadia mengurus pemrograman.
+
+30 Penutup – “M” Menjadi “Mentor” Raka mengirim surat balasan ke Mentor (melalui email) berisi: “Saya siap menjadi mentor berikutnya. Bagaimana Anda ingin memulai?” Mentor membalas: “Mulailah di sekolahmu. Jadikan setiap sudut kelas sebuah petualangan.” Penutup melingkari tema: setiap sudut = sudut trigonometri. Raka menatap ke kelasnya, menyiapkan “quest” pertama untuk temannya.
+
+31‑35 (Opsional – jika ingin 35 bab) Ekspansi Sekolah - Bab 31‑32: Raka memperkenalkan “Trigonometri Quest” di kelas, menggabungkan cerita real‑life.
+
+- Bab 33‑34: Siswa lain ikut, menambah variasi (misal: “Quest Cos” untuk anggota OSIS, “Quest Tan” untuk tim basket).
+
+- Bab 35: Festival tahunan sekolah menampilkan “Pameran Puzzle Trig”. Raka menutup cerita dengan pesan moral: “Belajar tidak harus membosankan; setiap angka punya cerita, setiap sudut ada petualangan.” Menunjukkan bagaimana ilmu bisa menjadi alat sosial dan hiburan. Hubungan Raka‑Siti, Raka‑Dito, Raka‑Nadia menjadi lebih kuat; semua tumbuh bersama.
+
+Catatan Penting untuk Penulisan
+
+Penggunaan Trigonometri Secara Natural
+
+Setiap bab menampilkan satu atau dua konsep trigonometri (sin, cos, tan, identitas, aturan sudut) secara praktis, bukan sekadar rumus.
+
+Hubungkan nilai trigonometri dengan jarak, arah, atau objek fisik (mis.: sin 30° → 0,5 km). Ini membuat pembaca bisa “merasakan” matematika.
+
+Tone Slice‑of‑Life
+
+Fokus pada interaksi remaja: persahabatan, sedikit romance (Raka‑Siti), dukungan keluarga (Dito), kolaborasi proyek (Nadia).
+
+Konflik bersifat internal (keraguan Raka) atau harian (tugas sekolah, persiapan ujian) – bukan antagonis besar.
+
+Misteri Terus Berlanjut
+
+Setiap hadiah (kompas, kristal, buku, USB) diikuti oleh pertanyaan baru yang menuntun ke bab berikutnya, menjaga ritme “cliffhanger” ringan.
+
+Penulis dapat menambahkan tugas pembaca (mis. “Coba selesaikan soal pada bab 24”) untuk meningkatkan interaksi.
+
+Penyisipan Nilai Moral
+
+Di akhir cerita, Raka menjadi mentor bagi teman‑temannya, menegaskan tema “ilmu untuk berbagi”.
+
+Trigonometri menjadi metafora kehidupan: sin = naik‑turun, cos = keseimbangan, tan = langkah berani.
+
+Struktur Bebas 25‑35 Bab
+
+Jika ingin lebih pendek: gabungkan bab 11‑12 menjadi satu, dan hilangkan bab 31‑35 (tutup pada bab 30).
+
+Jika ingin lebih panjang, tambahkan subplot seperti kompetisi matematika sekolah, atau cerita pendukung (mis.: latar belakang Mentor).
+
+Ringkasan Singkat Plot
+
+Awal – Raka menerima surat misterius yang menantang ia menemukan lokasi lewat sin, cos, tan.
+
+Belajar & Eksplorasi – Ia memecahkan petunjuk satu per satu, menggabungkan nilai trigonometri dengan jarak dan arah di kota.
+
+Pencarian – Melalui serangkaian tempat (patung, kafe, taman, bilik bawah tanah) ia menemukan hadiah pertama – Kompas Trigonometri.
+
+Pertanyaan Lanjutan – Kompas memberi soal baru (sin = cos), memaksa Raka melanjutkan ke jalan 45°.
+
+Klimaks – Di puncak menara jam, ia menemukan buku sketsa + USB, mengungkap identitas Mentor.
+
+Resolusi – Mentor memberi beasiswa & tugas menjadi mentor selanjutnya. Raka memulai proyek game edukatif, menutup cerita dengan harapan baru.
+
+Struktur ini bisa membantu Anda menulis webnovel yang menggabungkan trigonometri dengan kehidupan remaja yang penuh warna!

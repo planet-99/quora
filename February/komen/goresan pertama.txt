@@ -1,0 +1,96 @@
+BAB 1: GORESAN PERTAMA
+
+Goal Bab Ini:
+
+1. Memperkenalkan Mira sebagai karakter yang mandiri, berbakat, dan observan.
+2. Memperkenalkan konflik internalnya (tanggung jawab finansial vs. passion).
+3. Memperkenalkan setting utama (Taman Kota Srengseng) dan atmosfer Jakarta.
+4. Memberikan "Value Added" pertama berupa tips sketsa potret kepada pembaca.
+5. Menciptakan hook yang membuat pembaca penasaran dengan Bab 2.
+
+Tokoh:
+
+· Mira Kusuma (POV)
+· Beberapa figur latar (orang tua dan anak, lansia)
+· Arka (hanya disebut sebagai "si cowok bangku jauh" di akhir bab, sebagai cliffhanger)
+
+Lokasi: Taman Kota Srengseng (Bangku di Bawah Pohon Ketapang)
+
+---
+
+STRUKTUR ADEGAN DETAIL
+
+ADEGAN 1: PEMBUKA - AKSI & KARAKTER
+
+· Waktu: Sabtu sore, pukul 16.15 (Golden Hour).
+· Adegan Dibuka Dengan: Mira sedang asyik menggambar. Bukan hanya duduk diam, tapi dalam kondisi flow state seorang seniman.
+· Visual & Sensory:
+  · Suara: Gemericik air danau, celoteh anak-anak, musik dari earphone Mira (lo-fi beats).
+  · Bau: Aroma tanah basah setelah disiram, dicampur wangi gorengan dari pedagang kaki lima.
+  · Pencahayaan: Cahaya keemasan menyorot wajah subjeknya, menciptakan bayangan lembut yang sempurna untuk digambar.
+· Internal Monolog Mira (POV):
+  · Langsung menunjukkan keahliannya: "Proporsi wajahnya 1:1, cocok. Tinggal menangkap senyum di matanya..."
+  · Menunjukkan ini adalah rutinitasnya: "Ini komisi keempat bulan ini. Alhamdulillah."
+  · Memperkenalkan motivasi finansial dengan halus: "Kalau ini selesai, cukup buat bayar les tambahan dan beli sketchbook baru."
+· Aksi Fisik: Jarinya yang ada noda pensil bergerak lincah, sesekali mengukur dengan pensil, menghapus kesalahan kecil dengan kneaded eraser.
+
+ADEGAN 2: INTERAKSI & BISNIS
+
+· Trigger: Seorang Ibu dan anak lelaki (sekitar 10 tahun) yang menjadi subjeknya mendekat.
+· Dialog & Karakterisasi:
+  · Ibu: "Wah, bagus sekali, Mbak! Mirip banget!"
+  · Mira (sopan dan profesional): "Terima kasih, Bu. Ini sebentar lagi selesai. Biasanya saya kirim versi scan bersihnya via WhatsApp."
+  · Ibu: "Ini bayarnya langsung atau gimana?"
+  · Mira (sudah hafal prosedur): "Bisa langsung saja, Bu. Rp 75.000. Kalau mau versi berwarna pakai watercolor, tambah Rp 25.000."
+  · (Ibu memilih yang polos, transfer via QRIS).
+· Internal Monolog Mira (POV):
+  · "Lumayan. Rp 75.000 bisa buat jajan Dika seminggu, atau beli pensil 2B satu pack." -> Ini menunjukkan manajemen keuangannya.
+  · "Biasanya, harga segini di luar jam sekolah. Kalau weekday, saya kasih diskon." -> Menunjukkan dia pintar berbisnis.
+
+ADEGAN 3: "WAWASAN SENI" YANG ORGANIK
+
+· Trigger: Setelah ibu dan anak pergi, Mira membuka halaman baru sketchbook-nya untuk mencatat pemasukan. Dia melihat coretan latihannya.
+· Internal Monolog (Menjadi "Materi" untuk Pembaca):
+  · "Banyak yang bilang gambar potret itu sulit. Padahal kuncinya cuma di proporsi. Dari dagu ke ujung hidung, itu biasanya sepertiga dari total tinggi wajah." -> Tips #1: Proporsi.
+  · "Yang bikin hidup itu ekspresi. Bukan cuma senyum di mulut, tapi juga kerutan di sudut mata. Senyum tulus bikin mata menyipit, sementara senyum palsu cuma ada di bibir." -> Tips #2: Menangkap Ekspresi.
+  · (Sambil melihat bayangan di pohon)... "Nah, arsiran itu yang kasih dimensi. Lihat bayangan di bawah dagu ini. Harus gradasi, dari gelap ke terang. Jangan ditekan kayak mau menusuk kertas." -> Tips #3: Teknik Arsir.
+· Integrasi: Semua wawasan ini mengalir natural dari pikiran seorang seniman yang merefleksikan karyanya, bukan seperti textbook.
+
+ADEGAN 4: PENGENALAN KONFLIK INTERNAL & LATAR BELAKANG
+
+· Trigger: Mira mendapat notifikasi transfer. Dia membuka aplikasi bank.
+· Internal Monolog (POV):
+  · "Tabungan sekarang Rp 1,2 juta. Masih jauh dari target beli tablet grafis yang Rp 2,5 juta. Tapi buat bayar SPP tambahan bulan depan sudah cukup."
+  · "Ibu bilang, jangan terlalu dipaksakan. Tapi ngelihat Ayah pulang malem-malam, bau bensin dan keringat, rasanya... aku harus bisa bantu." -> Memperkenalkan konflik internal dan latar belakang keluarga.
+  · "Kadang aku rasa menggambar yang nggak ada deadline-nya. Seperti dulu, waktu masih kecil." -> Menunjukkan dilema passion vs. uang.
+
+ADEGAN 5: PENGENALAN ARKA (HOOK & CLIFFHANGER)
+
+· Trigger: Mira mengangkat pandangannya untuk meregangkan badan. Matanya secara tidak sengaja tertuju ke seorang cowok yang duduk di bangku jauh, di seberang danau.
+· Deskripsi Visual Arka (dari kacamata Mira):
+  · Cowok itu duduk membelakangi keramaian.
+  · Punggungnya tegak, fokus sekali pada sesuatu di pangkuannya.
+  · "Dia bukan sedang main HP. Tangannya bergerak lincah, stabil, seperti... sedang menggambar?"
+  · "Dia menggambar apa? Pemandangan? Tapi kok tatapannya ke arah gedung tua di balik pepohonan itu."
+· Aksi Mira (Karakterisasi melalui Aksi):
+  · Rasa ingin tahu sebagai seorang seniman dan observan membuatnya tertarik.
+  · Dengan hati-hati, dia pindah ke bangku yang lebih dekat, masih menjaga jarak.
+  · Dari sudut barunya, dia bisa melihat dengan jelas: cowok itu sedang menggambar dengan pena hitam, di sebuah sketchbook yang terlihat mahal.
+  · "Astaga... itu sketchbook Moleskine. Harganya setara dengan sepuluh komisi headshot." -> Menunjukkan perbedaan kelas sosial.
+· Cliffhanger / Kalimat Penutup Bab:
+  · Mira ingin melihat lebih dekat. Dia mendekat beberapa langkah, mencoba melihat detail goresan tintanya.
+  · Tiba-tiba, tanpa menengok, cowok itu berkata dengan suara datar dan dingin yang membuat Mira membeku...
+  · "Senang mengintip, ya?"
+
+---
+
+ANALISIS STRUKTUR INI:
+
+1. Show, Don't Tell: Karakter Mira langsung ditunjukkan melalui aksi (menggambar, berbisnis, mengelola uang), bukan diceramahkan.
+2. Hook Berlapis:
+   · Hook Awal: Adegan menggambar yang hidup.
+   · Hook Tengah: Konflik internal Mira (uang vs. passion).
+   · Hook Akhir: Kemunculan misterius Arka dan kalimat pembukanya yang tajam.
+3. Integrasi Nilai Tambah: Wawasan seni mengalir secara organik dari pikiran Mira, tidak dipaksakan.
+4. Setting yang Hidup: Taman tidak hanya jadi latar, tapi menjadi karakter yang mempengaruhi mood dan pencahayaan.
+5. Drama Segera: Bab ini tidak hanya perkenalan, tapi langsung diakhiri dengan ketegangan yang membuat pembaca ingin langsung membuka Bab 2.

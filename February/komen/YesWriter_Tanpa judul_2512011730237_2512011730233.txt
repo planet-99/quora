@@ -1,0 +1,190 @@
+
+---
+
+TEMPLATE STRUKTUR BAB WEBNOVEL
+
+INFORMASI DASAR BAB
+- Judul Bab: [Isi judul bab]
+- Nomor Bab: [Bab ke-?]
+- POV (Point of View): [Nama karakter yang jadi sudut pandang]
+- Tujuan Bab: [Apa yang harus tercapai di akhir bab ini?]
+- Mood/Tone: [Tegang/Romantis/Misterius/Aksi/dll]
+
+---
+
+BAGIAN 1: OPENING HOOK (150-300 kata)
+Fungsi: Menarik perhatian pembaca sejak kalimat pertama
+
+- Lokasi: [Tempat kejadian]
+- Waktu: [Pagi/Siang/Malam/Spesifik jam]
+- Kondisi Karakter: [Sedang apa? Perasaan apa?]
+- Hook/Pembuka Menarik: 
+  - [ ] Dialog mengejutkan
+  - [ ] Aksi dramatis
+  - [ ] Deskripsi situasi mencekam
+  - [ ] Pertanyaan misterius
+  - [ ] Konflik langsung
+
+Tulis: [Isi pembuka yang langsung menarik perhatian]
+
+---
+
+BAGIAN 2: SITUASI & KONTEKS (200-400 kata)
+Fungsi: Memberikan gambaran situasi dan mengaitkan dengan bab sebelumnya
+
+- Recap Singkat (jika perlu): [Apa yang terjadi di bab sebelumnya?]
+- Situasi Saat Ini: [Apa yang sedang terjadi?]
+- Karakter Hadir:
+  1. [Nama] - [Perannya di scene ini]
+  2. [Nama] - [Perannya di scene ini]
+  3. [Nama] - [Perannya di scene ini]
+
+- Info Penting yang Diungkap:
+  - [Poin 1]
+  - [Poin 2]
+  - [Poin 3]
+
+Detail Atmosfer:
+- Visual: [Bagaimana tampilan lokasi?]
+- Suara: [Apa yang terdengar?]
+- Emosi: [Apa yang dirasakan POV?]
+
+---
+
+BAGIAN 3: INSIDEN/TRIGGER (300-500 kata)
+Fungsi: Sesuatu terjadi yang menggerakkan plot bab ini
+
+- Peristiwa Pemicu: [Apa yang terjadi?]
+- Reaksi POV: [Bagaimana karakter utama bereaksi?]
+- Komplikasi: [Apa yang mempersulit situasi?]
+
+Dialog Kunci:
+- [Karakter A]: "[Dialog penting]"
+- [Karakter B]: "[Respons yang mengungkap sesuatu]"
+
+Perubahan Stakes: [Apa yang kini dipertaruhkan?]
+
+---
+
+BAGIAN 4: KONFLIK BERKEMBANG (400-600 kata)
+Fungsi: Meningkatkan ketegangan dan mengembangkan konflik
+
+- Obstacle/Hambatan: [Apa yang menghalangi karakter?]
+- Usaha Karakter: [Apa yang dilakukan untuk mengatasi?]
+- Twist/Komplikasi Baru: [Hal tak terduga yang muncul]
+
+Sub-scene:
+
+Scene A:
+- Lokasi: [Tempat]
+- Yang terjadi: [Kejadian]
+- Dampak emosional: [Efek ke karakter]
+
+Scene B:
+- Lokasi: [Tempat]
+- Yang terjadi: [Kejadian]
+- Dampak emosional: [Efek ke karakter]
+
+Perkembangan Karakter:
+- [Karakter] menyadari: [Realisasi/insight baru]
+- [Karakter] merasa: [Perubahan emosi]
+
+---
+
+BAGIAN 5: KLIMAKS BAB (300-500 kata)
+Fungsi: Puncak ketegangan/emosi bab ini
+
+- Momen Puncak: [Apa yang terjadi di klimaks?]
+- Pilihan/Keputusan: [Apa yang harus diputuskan karakter?]
+- Aksi Klimaks:
+  - [ ] Konfrontasi verbal
+  - [ ] Pertarungan fisik
+  - [ ] Pengungkapan rahasia
+  - [ ] Momen emosional
+  - [ ] Plot twist
+  
+Dialog/Aksi Penting:
+[Tulis momen paling intens]
+
+Konsekuensi Langsung: [Apa akibat dari klimaks ini?]
+
+---
+
+BAGIAN 6: RESOLUSI/AFTERMATH (200-400 kata)
+Fungsi: Menyelesaikan konflik bab ini dan menyiapkan bab berikutnya
+
+- Hasil Konflik: [Bagaimana konflik terselesaikan?]
+- Perubahan Situasi: [Apa yang berubah dari awal bab?]
+- Reaksi Karakter: [Bagaimana karakter merespons hasil ini?]
+
+Biaya/Kehilangan: [Apa yang hilang/dikorbankan?]
+Keuntungan/Pencapaian: [Apa yang didapat?]
+
+---
+
+BAGIAN 7: CLOSING/CLIFFHANGER (100-200 kata)
+Fungsi: Membuat pembaca penasaran untuk bab berikutnya
+
+Pilih salah satu:
+- [ ] Cliffhanger keras (kejadian mengejutkan)
+- [ ] Cliffhanger lembut (pertanyaan/misteri)
+- [ ] Refleksi karakter yang menggantung
+- [ ] Foreshadowing ancaman baru
+- [ ] Pengungkapan parsial rahasia
+
+Tulis penutup:
+[Kalimat/paragraf terakhir yang membuat penasaran]
+
+---
+
+CHECKLIST ELEMEN PENTING
+
+Plot:
+- [ ] Bab ini memajukan cerita utama
+- [ ] Ada konflik yang jelas
+- [ ] Ada perubahan dari awal ke akhir bab
+- [ ] Terhubung dengan bab sebelum dan sesudah
+
+Karakter:
+- [ ] POV memiliki tujuan jelas
+- [ ] Ada perkembangan karakter
+- [ ] Emosi karakter terasa otentik
+- [ ] Dialog sesuai kepribadian
+
+Pacing:
+- [ ] Opening menarik perhatian
+- [ ] Tidak ada bagian yang membosankan
+- [ ] Klimaks di posisi tepat
+- [ ] Ending membuat penasaran
+
+World-building:
+- [ ] Setting dijelaskan dengan natural
+- [ ] Konsisten dengan bab sebelumnya
+- [ ] Ada detail sensorik (visual, suara, bau, sentuhan)
+
+---
+
+CATATAN TAMBAHAN
+
+Foreshadowing untuk bab depan:
+- [Hint 1]
+- [Hint 2]
+
+Subplot yang berkembang:
+- [Subplot A]: [Perkembangannya]
+- [Subplot B]: [Perkembangannya]
+
+Informasi yang sengaja disembunyikan:
+- [Rahasia yang belum diungkap]
+
+Power system/Magic/Kemampuan yang ditampilkan:
+- [Apa yang digunakan dan bagaimana?]
+
+---
+
+TARGET KATA
+- Minimum: [2000 kata]
+- Maksimum: [4000 kata]
+- Target ideal: [3000 kata]
+
+---
