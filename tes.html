@@ -221,11 +221,11 @@
     const GITHUB_TOKEN = ''; 
 
     // State Management
-    let currentFolder = 'February';
+    let currentFolder = '';
     let currentChaptersList = []; // Menyimpan daftar file chapter saat ini
     let currentChapterIndex = -1; // Indeks chapter yang sedang dibuka
 
-    async function fetchGitHubFiles(path = '') {
+    async function fetchGitHubFiles(path = 'February') {
         const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${path}`;
         const headers = {};
         if (GITHUB_TOKEN) {
