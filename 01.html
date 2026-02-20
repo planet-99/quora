@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>GitHub Repo Navigator · dark mode + search + prev/next + sidebar</title>
+    <!-- Font Awesome (icons) & GitHub Markdown CSS (light/dark friendly) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --sidebar-bg: #f6f8fa;
+            --header-bg: #24292e;
+            --header-text: #ffffff;
+            --text: #24292e;
+            --border: #e1e4e8;
+            --hover: #eef2f5;
+            --accent: #0366d6;
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+            --shadow: rgba(0,0,0,0.1) 0 1px 3px;
+            --file-item-bg: #ffffff;
+            --empty-color: #586069;
+        }
+
+        body.dark {
+            --bg: #0d1117;
+            --sidebar-bg: #161b22;
+            --header-bg: #010409;
+            --header-text: #c9d1d9;
+            --text: #c9d1d9;
+            --border: #30363d;
+            --hover: #21262d;
+            --accent: #58a6ff;
+            --card-bg: #0d1117;
+            --input-bg: #0d1117;
+            --shadow: 0 1px 3px rgba(0,0,0,0.6);
+            --file-item-bg: #161b22;
+            --empty-color: #8b949e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.2s, color 0.2s;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* header */
+        .app-header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .repo-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .repo-title i {
+            font-size: 1.4rem;
+        }
+        .header-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--header-text);
+            padding: 0.4rem 0.9rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: var(--accent);
+        }
+        body.dark .icon-btn {
+            color: #c9d1d9;
+        }
+
+        /* main container: sidebar + content */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;  /* flex children overflow properly */
+        }
+
+        /* sidebar kiri (navigasi folder) */
+        .file-sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: width 0.15s;
+        }
+        .sidebar-header {
+            padding: 1rem 1rem 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--empty-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-header button {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .folder-tree {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 0.5rem 0.5rem 0.5rem;
+            list-style: none;
+            font-size: 0.9rem;
+        }
+        .tree-item {
+            padding: 0.3rem 0.5rem 0.3rem 1.2rem;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            border-left: 2px solid transparent;
+        }
+        .tree-item i {
+            width: 18px;
+            color: var(--accent);
+        }
+        .tree-item:hover {
+            background-color: var(--hover);
+        }
+        .tree-item.active {
+            background-color: var(--hover);
+            border-left-color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* panel kanan (konten) */
+        .content-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: var(--bg);
+        }
+
+        /* toolbar search, prev next */
+        .toolbar {
+            padding: 0.9rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--card-bg);
+        }
+        .search-wrapper {
+            flex: 3;
+            min-width: 220px;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            transition: 0.2s;
+        }
+        .search-wrapper i {
+            color: var(--empty-color);
+            margin-right: 8px;
+        }
+        .search-wrapper input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        .nav-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+        }
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .nav-btn:not(:disabled):hover {
+            background: var(--hover);
+            border-color: var(--accent);
+        }
+
+        /* file list (daftar) */
+        .file-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .file-row {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 1rem;
+            background-color: var(--file-item-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            gap: 12px;
+            transition: 0.1s;
+            box-shadow: var(--shadow);
+            word-break: break-word;
+        }
+        .file-row i {
+            font-size: 1.2rem;
+            width: 26px;
+            color: var(--accent);
+        }
+        .file-info {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        .file-name {
+            font-weight: 500;
+        }
+        .file-meta {
+            font-size: 0.8rem;
+            color: var(--empty-color);
+            display: flex;
+            gap: 15px;
+        }
+        .empty-folder {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--empty-color);
+            font-style: italic;
+        }
+
+        /* loading */
+        .loader {
+            text-align: center;
+            padding: 3rem;
+            color: var(--accent);
+        }
+
+        /* responsive: mobile sidebar collapse bisa diatur via class (toggle) */
+        @media (max-width: 640px) {
+            .file-sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+                transform: translateX(-100%);
+                transition: transform 0.2s ease;
+                width: 260px;
+            }
+            .file-sidebar.mobile-visible {
+                transform: translateX(0);
+            }
+            .main-layout {
+                position: relative;
+            }
+            .sidebar-header .close-sidebar {
+                display: inline-block;
+            }
+        }
+        .sidebar-header .close-sidebar {
+            display: none;
+        }
+        @media (max-width: 640px) {
+            .sidebar-header .close-sidebar {
+                display: inline-block;
+            }
+        }
+        .overlay {
+            display: none;
+        }
+        @media (max-width: 640px) {
+            .overlay.active {
+                display: block;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 99;
+            }
+        }
+        .hide-desktop {
+            display: none;
+        }
+        @media (max-width: 640px) {
+            .hide-desktop {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="repo-title">
+            <i class="fab fa-github"></i>
+            <span>github-repo-navigator / repo</span>
+        </div>
+        <div class="header-controls">
+            <button class="icon-btn" id="menuToggleBtn" title="Toggle folder sidebar"><i class="fas fa-bars"></i> <span class="hide-desktop">Folder</span></button>
+            <button class="icon-btn" id="darkModeToggle"><i class="fas fa-moon"></i> <span>Dark</span></button>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- sidebar folder tree -->
+        <aside class="file-sidebar" id="folderSidebar">
+            <div class="sidebar-header">
+                <span><i class="fas fa-folder-open" style="margin-right: 6px;"></i>Direktori</span>
+                <button class="close-sidebar" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <ul class="folder-tree" id="folderTree">
+                <li class="tree-item disabled" style="justify-content: center; opacity:0.7;">Memuat folder...</li>
+            </ul>
+        </aside>
+
+        <!-- overlay untuk mobile -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- konten kanan -->
+        <div class="content-panel">
+            <div class="toolbar">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Cari file/folder..." autocomplete="off">
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prevBtn" title="Sebelumnya"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <button class="nav-btn" id="nextBtn" title="Berikutnya">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div id="fileListContainer" class="file-grid">
+                <!-- akan diisi oleh javascript -->
+                <div class="loader"><i class="fas fa-spinner fa-pulse"></i> Mengambil daftar file...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ========== KONFIGURASI GITHUB ==========
+            // Ganti dengan owner/repo yang diinginkan (contoh: github/docs)
+            const OWNER = 'planet-99';
+            const REPO = 'quora';
+            const BRANCH = 'main';   // atau 'master' sesuai repo
+
+            // state global
+            let currentPath = '';                       // path folder yang sedang dibuka (relatif ke repo)
+            let allItems = [];                           // daftar item (file + folder) dari path saat ini
+            let filteredItems = [];                       // hasil pencarian
+            let selectedIndex = -1;                        // indeks di filteredItems untuk prev/next
+            let folderStructure = new Map();               // sederhana untuk tree: path -> array of nama subfolder
+            let allFoldersList = [];                       // untuk tree (semua folder path unik)
+            let currentLoadedPath = '';                     // untuk keperluan cache tree
+
+            // elemen DOM
+            const folderTreeEl = document.getElementById('folderTree');
+            const fileContainer = document.getElementById('fileListContainer');
+            const searchInput = document.getElementById('searchInput');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const darkToggle = document.getElementById('darkModeToggle');
+            const menuToggle = document.getElementById('menuToggleBtn');
+            const closeSidebar = document.getElementById('closeSidebarBtn');
+            const sidebar = document.getElementById('folderSidebar');
+            const overlay = document.getElementById('overlay');
+
+            // ========== HELPER ==========
+            function updateSidebarVisibility(force) {
+                // untuk mobile
+                if (window.innerWidth <= 640) {
+                    // handled by class
+                }
+            }
+
+            // buka/tutup sidebar mobile
+            function showSidebar(show) {
+                if (show) {
+                    sidebar.classList.add('mobile-visible');
+                    overlay.classList.add('active');
+                } else {
+                    sidebar.classList.remove('mobile-visible');
+                    overlay.classList.remove('active');
+                }
+            }
+
+            menuToggle.addEventListener('click', () => showSidebar(true));
+            closeSidebar.addEventListener('click', () => showSidebar(false));
+            overlay.addEventListener('click', () => showSidebar(false));
+
+            // ========== DARK MODE ==========
+            function initDarkMode() {
+                const stored = localStorage.getItem('githubNavDarkMode');
+                if (stored === 'true') {
+                    document.body.classList.add('dark');
+                    darkToggle.innerHTML = '<i class="fas fa-sun"></i> <span>Light</span>';
+                } else {
+                    darkToggle.innerHTML = '<i class="fas fa-moon"></i> <span>Dark</span>';
+                }
+            }
+            darkToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                const isDark = document.body.classList.contains('dark');
+                localStorage.setItem('githubNavDarkMode', isDark);
+                darkToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i> <span>Light</span>' : '<i class="fas fa-moon"></i> <span>Dark</span>';
+            });
+
+            // ========== GITHUB API ==========
+            async function fetchRepoContents(path = '') {
+                const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`;
+                try {
+                    const res = await fetch(apiUrl);
+                    if (!res.ok) throw new Error(`Gagal mengambil data: ${res.status}`);
+                    const data = await res.json();
+                    if (!Array.isArray(data)) {
+                        // kemungkinan berupa file tunggal (jarang, tapi kalau path menuju file)
+                        return [data]; // seragamkan menjadi array
+                    }
+                    return data;
+                } catch (e) {
+                    console.error(e);
+                    alert('Error mengambil data dari GitHub: ' + e.message);
+                    return [];
+                }
+            }
+
+            // load konten berdasarkan path (misal: 'folder1/subfolder')
+            async function loadPath(path) {
+                currentPath = path || '';
+                fileContainer.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Loading ${path || 'root'}...</div>`;
+                
+                
+                
+                
+                
+                
+                
+                
+
+                const items = await fetchRepoContents(path);
+                allItems = items.map(item => ({
+                    name: item.name,
+                    path: item.path,
+                    type: item.type,        // 'file' atau 'dir'
+                    size: item.size,
+                    download_url: item.download_url,
+                    html_url: item.html_url
+                })).sort((a, b) => {
+                    // folder di atas, lalu file
+                    if (a.type === 'dir' && b.type !== 'dir') return -1;
+                    if (a.type !== 'dir' && b.type === 'dir') return 1;
+                    return a.name.localeCompare(b.name);
+                });
+                
+                
+                
+                
+                
+                
+                
+                
+
+                // simpan juga untuk folder tree (jika belum ada)
+                updateFolderTreeFromItems(allItems, path);
+
+                // reset pencarian & filtered
+                searchInput.value = '';
+                applySearch(''); 
+                renderFileList(filteredItems);
+                renderFolderTree(); // render ulang sidebar tree
+            }
+
+            // update peta folder (sederhana) dari items saat ini
+            function updateFolderTreeFromItems(items, currentDir) {
+                // Tambahkan folder dari currentDir ke dalam struktur global
+                const folders = items.filter(i => i.type === 'dir').map(i => i.name);
+                // gunakan Map dengan key full path
+                const fullPath = currentDir || ''; 
+                if (!folderStructure.has(fullPath)) {
+                    folderStructure.set(fullPath, folders);
+                } else {
+                    // update (jika ada)
+                    folderStructure.set(fullPath, folders);
+                }
+
+                // kumpulkan semua folder path unik untuk tree (dari folderStructure)
+                // kita bisa buat array semua path yang ada sebagai kunci + subfolder
+                // sederhana: dari folderStructure.keys() dan setiap folder path
+                const allPaths = new Set();
+                for (let [dirPath, subFolders] of folderStructure.entries()) {
+                    if (dirPath !== '') allPaths.add(dirPath);
+                    subFolders.forEach(f => {
+                        const full = dirPath ? `${dirPath}/${f}` : f;
+                        allPaths.add(full);
+                    });
+                }
+                allFoldersList = Array.from(allPaths).sort((a,b) => a.localeCompare(b));
+            }
+
+            // render folder tree (unordered list)
+            function renderFolderTree() {
+                if (allFoldersList.length === 0 && folderStructure.size === 0) {
+                    folderTreeEl.innerHTML = `<li class="tree-item" style="justify-content:center;">(tidak ada folder)</li>`;
+                    return;
+                }
+
+                // root folder dulu
+                // root folder dulu
+                let html = '';
+                // root
+                const rootActive = (currentPath === '') ? 'active' : '';
+                html += `<li class="tree-item ${rootActive}" data-path="root"><i class="fas fa-home"></i> root</li>`;
+
+                // daftar semua folder (unique) path
+                const sorted = allFoldersList.slice().sort();
+                sorted.forEach(folderPath => {
+                    const active = (currentPath === folderPath) ? 'active' : '';
+                    // ambil nama folder terakhir
+                    const folderName = folderPath.split('/').pop();
+                    html += `<li class="tree-item ${active}" data-path="${folderPath}"><i class="fas fa-folder"></i> ${folderName} <span style="font-size:0.7rem; opacity:0.6;">/${folderPath}</span></li>`;
+                });
+
+                folderTreeEl.innerHTML = html;
+
+                // event listener untuk setiap tree-item (kecuali disabled)
+                document.querySelectorAll('.tree-item[data-path]').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        const path = el.dataset.path === 'root' ? '' : el.dataset.path;
+                        loadPath(path);
+                        if (window.innerWidth <= 640) showSidebar(false); // tutup sidebar di mobile
+                    });
+                });
+            }
+
+            // pencarian (case-insensitive)
+            function applySearch(keyword) {
+                const lower = keyword.toLowerCase().trim();
+                if (!lower) {
+                    filteredItems = [...allItems];
+                } else {
+                    filteredItems = allItems.filter(item => 
+                        item.name.toLowerCase().includes(lower)
+                    );
+                }
+
+                // reset selected index
+                if (filteredItems.length > 0) {
+                    selectedIndex = 0;
+                } else {
+                    selectedIndex = -1;
+                }
+            }
+
+            // render daftar file/folder berdasarkan filteredItems
+            function renderFileList(items) {
+                if (!items.length) {
+                    fileContainer.innerHTML = `<div class="empty-folder"><i class="fas fa-folder-open"></i> Tidak ada file/folder ditemukan.</div>`;
+                    updateNavButtons();
+                    return;
+                }
+
+                let html = '';
+                items.forEach((item, idx) => {
+                    const icon = item.type === 'dir' ? 'fa-folder' : 'fa-file';
+                    const size = item.size ? (item.size / 1024).toFixed(1) + ' KB' : '';
+                    const isSelected = (idx === selectedIndex) ? 'style="border: 2px solid var(--accent);"' : '';
+                    html += `<div class="file-row" data-index="${idx}" ${isSelected}>`;
+                    html += `<i class="fas ${icon}"></i>`;
+                    html += `<div class="file-info">`;
+                    html += `<span class="file-name">${item.name}</span>`;
+                    html += `<span class="file-meta">${item.type} ${size ? '• ' + size : ''}</span>`;
+                    html += `</div>`;
+                    html += `</div>`;
+                });
+                fileContainer.innerHTML = html;
+
+                // event klik untuk membuka folder/file
+                document.querySelectorAll('.file-row').forEach(row => {
+                    row.addEventListener('click', (e) => {
+                        const idx = row.dataset.index;
+                        if (idx !== undefined) {
+                            const item = filteredItems[parseInt(idx)];
+                            if (item.type === 'dir') {
+                                // buka folder
+                                loadPath(item.path);
+                            } else {
+                                // buka file di tab baru
+                            //    if (item.html_url) window.open(item.html_url, '_blank');
+                       
+                       
+                       
+                     // ========== FUNGSI MENAMPILKAN KONTEN FILE ==========
+async function displayFileContent(item) {
+    if (item.type !== 'file') return;
+    
+    // Hanya untuk file txt dan html
+    const ext = item.name.split('.').pop().toLowerCase();
+    if (ext !== 'txt' && ext !== 'html' && ext !== 'htm') {
+        alert('Hanya file .txt, .html, atau .htm yang dapat ditampilkan');
+        return;
+    }
+
+    try {
+        // Tampilkan loading
+        fileContainer.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Memuat konten ${item.name}...</div>`;
+        
+        // Ambil konten file
+        const response = await fetch(item.download_url);
+        if (!response.ok) throw new Error('Gagal mengambil konten file');
+        
+        const content = await response.text();
+        
+        // Tampilkan konten dalam card
+        let contentHtml = '';
+        if (ext === 'txt') {
+            // Untuk file teks - tampilkan dalam pre dengan wrap
+            contentHtml = `
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin:0; color: var(--accent);">
+                            <i class="fas fa-file-alt"></i> ${item.name}
+                        </h3>
+                        <button class="icon-btn" id="backToFiles" style="color: var(--text);">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </button>
+                    </div>
+                    <pre style="white-space: pre-wrap; word-wrap: break-word; background: var(--sidebar-bg); padding: 1rem; border-radius: 6px; max-height: 70vh; overflow: auto; color: var(--text);">${escapeHtml(content)}</pre>
+                </div>
+            `;
+        } else {
+            // Untuk file HTML - tampilkan dalam iframe
+            contentHtml = `
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin:0; color: var(--accent);">
+                            <i class="fas fa-code"></i> ${item.name}
+                        </h3>
+                        <button class="icon-btn" id="backToFiles" style="color: var(--text);">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </button>
+                    </div>
+                    <iframe srcdoc="${escapeHtml(content)}" style="width: 100%; height: 70vh; border: 1px solid var(--border); border-radius: 4px; background: white;"></iframe>
+                </div>
+            `;
+        }
+        
+        fileContainer.innerHTML = contentHtml;
+        
+        // Tambahkan event listener untuk tombol kembali
+        document.getElementById('backToFiles').addEventListener('click', () => {
+            renderFileList(filteredItems);
+        });
+        
+    } catch (error) {
+        console.error('Error membaca file:', error);
+        alert('Gagal membaca konten file: ' + error.message);
+        renderFileList(filteredItems); // Kembali ke daftar file
+    }
+}
+
+// Helper function untuk escape HTML special characters
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/`/g, "&#96;");
+}  
+                       
+                            
+                            displayFileContent(item);
+                            
+                            }
+                        }
+                    });
+                });
+
+                updateNavButtons();
+            }
+
+            // update status prev/next
+            function updateNavButtons() {
+                if (filteredItems.length === 0 || selectedIndex < 0) {
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = true;
+                    return;
+                }
+                prevBtn.disabled = (selectedIndex <= 0);
+                nextBtn.disabled = (selectedIndex >= filteredItems.length - 1);
+            }
+
+            // prev / next action
+            function goPrev() {
+                if (selectedIndex > 0 && filteredItems.length) {
+                    selectedIndex--;
+                    renderFileList(filteredItems); // re-render dengan highlight
+                    scrollToSelected();
+                }
+            }
+            function goNext() {
+                if (selectedIndex < filteredItems.length - 1 && filteredItems.length) {
+                    selectedIndex++;
+                    renderFileList(filteredItems);
+                    scrollToSelected();
+                }
+            }
+            function scrollToSelected() {
+                setTimeout(() => {
+                    const selectedRow = document.querySelector(`.file-row[data-index="${selectedIndex}"]`);
+                    if (selectedRow) selectedRow.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }, 50);
+            }
+
+            // event listener search dengan debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applySearch(e.target.value);
+                    renderFileList(filteredItems);
+                }, 300);
+            });
+
+            prevBtn.addEventListener('click', goPrev);
+            nextBtn.addEventListener('click', goNext);
+
+            // inisialisasi: ambil data root
+            async function init() {
+                initDarkMode();
+                await loadPath('');  // root
+
+                // event resize untuk tutup sidebar kalau layar besar
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 640) {
+                        sidebar.classList.remove('mobile-visible');
+                        overlay.classList.remove('active');
+                    }
+                });
+            }
+
+            init();
+
+            // optional: export untuk debug
+        })();
+    </script>
+</body>
+</html>
