@@ -143,7 +143,7 @@ h2 { font-size: 1.2rem; color: var(--accent-color); border-bottom: 2px solid #ee
     .btn-nav { width: 100%; }
 }
 
-    /* Dark Mode */
+/* Dark Mode */
 body.dark {
     --bg-color: #121212;
     --card-bg: #1e1e1e;
@@ -168,7 +168,8 @@ body.dark {
 body.dark #dark-toggle {
     background: #333;
     color: white;
-        }
+}
+
 </style>
 </head>
 
@@ -178,7 +179,6 @@ body.dark #dark-toggle {
     <h1>Pustaka Novel</h1>
     <button id="dark-toggle" onclick="toggleDarkMode()">🌙</button>
 </header>
-    
 <div class="container">
 
 <div id="main-view">
@@ -216,51 +216,6 @@ body.dark #dark-toggle {
 </div>
 
 <script>
-
-// ===== DARK MODE =====
-function toggleDarkMode() {
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    localStorage.setItem('darkMode', isDark);
-}
-
-// Load dark mode saat halaman dibuka
-(function initDarkMode(){
-    const saved = localStorage.getItem('darkMode');
-    if (saved === 'true') {
-        document.body.classList.add('dark');
-    }
-})();
-
-
-// ===== SAVE SCROLL POSITION =====
-window.addEventListener('scroll', () => {
-    if (currentChapterIndex !== -1) {
-        localStorage.setItem(
-            `scroll-${currentFolder}-${currentChapterIndex}`,
-            window.scrollY
-        );
-    }
-});
-
-    setTimeout(() => {
-    const savedScroll = localStorage.getItem(
-        `scroll-${currentFolder}-${currentChapterIndex}`
-    );
-    if (savedScroll) {
-        window.scrollTo(0, parseInt(savedScroll));
-    }
-}, 100);
-
-    
-// Auto buka bab terakhir jika ada
-const lastFolder = localStorage.getItem('lastFolder');
-const lastIndex = localStorage.getItem('lastChapterIndex');
-
-if (lastFolder === currentFolder && lastIndex !== null) {
-    readChapterByIndex(parseInt(lastIndex));
-    }
-    
 const GITHUB_USERNAME = 'planet-99';
 const REPO_NAME = 'quora';
 const GITHUB_TOKEN = '';
@@ -325,13 +280,16 @@ async function loadChapters(folderPath, folderName) {
 function readChapterByIndex(index) {
     if (index < 0 || index >= currentChaptersList.length) return;
     currentChapterIndex = index;
-
+    
+    
     localStorage.setItem('lastChapterIndex', index);
-    localStorage.setItem('lastFolder', currentFolder);
-
+localStorage.setItem('lastFolder', currentFolder);
+    
+    
     const chapter = currentChaptersList[index];
     renderReaderView(chapter.cleanName, chapter.url);
 }
+
 async function renderReaderView(title, url) {
     document.getElementById('chapters-view').style.display = 'none';
     document.getElementById('reader-view').style.display = 'block';
@@ -380,7 +338,57 @@ function closeReader() {
 }
 
 init();
+
+
+
+
+// ===== DARK MODE =====
+function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('darkMode', isDark);
+}
+
+// Load dark mode saat halaman dibuka
+(function initDarkMode(){
+    const saved = localStorage.getItem('darkMode');
+    if (saved === 'true') {
+        document.body.classList.add('dark');
+    }
+})();
+
+
+// ===== SAVE SCROLL POSITION =====
+window.addEventListener('scroll', () => {
+    if (currentChapterIndex !== -1) {
+        localStorage.setItem(
+            `scroll-${currentFolder}-${currentChapterIndex}`,
+            window.scrollY
+        );
+    }
+});
+
+
+
+setTimeout(() => {
+    const savedScroll = localStorage.getItem(
+        `scroll-${currentFolder}-${currentChapterIndex}`
+    );
+    if (savedScroll) {
+        window.scrollTo(0, parseInt(savedScroll));
+    }
+}, 100);
+
+
+// Auto buka bab terakhir jika ada
+const lastFolder = localStorage.getItem('lastFolder');
+const lastIndex = localStorage.getItem('lastChapterIndex');
+
+if (lastFolder === currentFolder && lastIndex !== null) {
+    readChapterByIndex(parseInt(lastIndex));
+}
+
 </script>
 
 </body>
-                                                                                                    </html>
+</html>
