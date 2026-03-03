@@ -234,7 +234,7 @@ async function fetchGitHubFiles(path = '') {
 }
 
 async function init() {
-    const files = await fetchGitHubFiles('February');
+    const files = await fetchGitHubFiles('dongeng');
     const container = document.getElementById('folder-container');
     container.innerHTML = '';
 
@@ -282,8 +282,6 @@ function readChapterByIndex(index) {
     currentChapterIndex = index;
     
     
-    localStorage.setItem('lastChapterIndex', index);
-localStorage.setItem('lastFolder', currentFolder);
     
     
     const chapter = currentChaptersList[index];
@@ -356,37 +354,6 @@ function toggleDarkMode() {
         document.body.classList.add('dark');
     }
 })();
-
-
-// ===== SAVE SCROLL POSITION =====
-window.addEventListener('scroll', () => {
-    if (currentChapterIndex !== -1) {
-        localStorage.setItem(
-            `scroll-${currentFolder}-${currentChapterIndex}`,
-            window.scrollY
-        );
-    }
-});
-
-
-
-setTimeout(() => {
-    const savedScroll = localStorage.getItem(
-        `scroll-${currentFolder}-${currentChapterIndex}`
-    );
-    if (savedScroll) {
-        window.scrollTo(0, parseInt(savedScroll));
-    }
-}, 100);
-
-
-// Auto buka bab terakhir jika ada
-const lastFolder = localStorage.getItem('lastFolder');
-const lastIndex = localStorage.getItem('lastChapterIndex');
-
-if (lastFolder === currentFolder && lastIndex !== null) {
-    readChapterByIndex(parseInt(lastIndex));
-}
 
 </script>
 
