@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Saya + Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <h1>Buku Tamu Blog 📝</h1>
+    
+    <input type="text" id="nama" placeholder="Nama Anda"><br><br>
+    <textarea id="pesan" placeholder="Tulis pesan..."></textarea><br>
+    <button onclick="kirimPesan()">Kirim ke Supabase</button>
+
+    <hr>
+    <h3>Pesan Terakhir:</h3>
+    <div id="daftar-pesan">Memuat pesan...</div>
+
+    <script>
+        // 2. Hubungkan ke Proyek Anda (Ganti dengan URL & Key milikmu)
+        const SUPABASE_URL = 'https://xghkkggwidtrhqhwvzjb.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnaGtrZ2d3aWR0cmhxaHd2empiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTc3MjYsImV4cCI6MjA4ODQ3MzcyNn0.5EFkOK_U8p89I7-3NwW8rvbtlOSk-y5mMPsuWA3OVNI'; // Anon Key
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Fungsi untuk Mengambil Data
+        async function ambilPesan() {
+            const { data, error } = await supabase
+                .from('pesan')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) console.error(error);
+            else {
+                const list = data.map(p => `<p><b>${p.nama}:</b> ${p.isi_pesan}</p>`).join('');
+                document.getElementById('daftar-pesan').innerHTML = list || "Belum ada pesan.";
+            }
+        }
+
+        // Fungsi untuk Mengirim Data
+        async function kirimPesan() {
+            const nama = document.getElementById('nama').value;
+            const isi = document.getElementById('pesan').value;
+
+            const { error } = await supabase
+                .from('pesan')
+                .insert([{ nama: nama, isi_pesan: isi }]);
+
+            if (error) alert("Gagal kirim!");
+            else {
+                alert("Berhasil!");
+                ambilPesan(); // Refresh daftar pesan
+            }
+        }
+
+        // Jalankan saat halaman dibuka
+        ambilPesan();
+    </script>
+</body>
+</html>
+  
