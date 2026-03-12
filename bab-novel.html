@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel: [Judul Novel Kamu]</title>
+    
+    
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Link Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Icon Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            padding-top: 70px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Merriweather', serif;
+         font-size: 16px; /* Sesuaikan ukuran font jika perlu */
+     }
+     /* Opsional: Atur font khusus untuk area konten novel agar lebih nyaman dibaca */
+     #konten-novel {
+         font-size: 1.1rem; /* Sedikit lebih besar dari body */
+         line-height: 1.8; /* Jarak antar baris yang optimal untuk bacaan */
+     }
+     /* Opsional: Atur font untuk judul agar konsisten */
+     h1, h2, h3, h4, h5, h6, .navbar-brand, .card-header {
+         font-family: 'Merriweather', serif;
+         font-weight: 600; /* Sedikit lebih tebal untuk judul */
+            
+        }
+        .search-highlight {
+            background-color: yellow;
+            font-weight: 500;
+        }
+        .bab-item {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .bab-item:hover {
+            background-color: var(--bs-secondary-bg);
+        }
+        .bab-aktif {
+            background-color: var(--bs-primary-bg-subtle);
+            font-weight: 600;
+        }
+        .nav-bab-btn {
+            min-width: 120px;
+        }
+        
+        /* Style untuk tombol floating navigasi bab */
+.floating-nav-bab {
+    position: fixed;
+    left: 280px;
+    bottom: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  /*  z-index: 999; Agar tidak tertutupi konten lain */
+}
+
+.floating-nav-btn {
+  
+    width: 50px;
+    height: 50px;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Sembunyikan tombol navigasi lama di header card */
+@media (max-width: 991px) {
+    .card-header .nav-bab-btn {
+        display: none;
+    }
+}
+@media (min-width: 492px) {
+    .floating-nav-bab {
+        display: none; /* Sembunyikan floating di layar besar jika ingin tombol tetap di header */
+    }
+}
+
+/* Efek hover untuk link di footer */
+footer a.hover:hover {
+    color: white !important;
+    transition: color 0.2s ease;
+}
+
+/* Responsif untuk footer di layar kecil */
+@media (max-width: 576px) {
+    footer .row {
+        text-align: center;
+    }
+    footer .d-flex.gap-3 {
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar Fixed-Top -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        
+        
+          
+        
+        <div class="container">
+          
+          
+            <a class="navbar-brand" href="#">Novel: <span id="novel-title">[Judul Novel Kamu]</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                
+                <!-- Fitur Pencarian -->
+                <div class="d-flex w-80 w-md-auto ms-auto">
+                  
+                  <button id="dark-mode-toggle" class="btn btn-outline-light me-3">
+                    <i class="bi bi-moon-stars-fill"></i></button>
+                  
+                  
+                    <input id="search-input" type="text" class="form-control me-2" placeholder="Cari di bab ini">
+                    <button id="search-btn" class="btn btn-outline-light"><i class="bi bi-search"></i></button>
+               <!--     <button id="clear-search-btn" class="btn btn-outline-secondary ms-1"><i class="bi bi-x"></i></button>
+                     Tombol X Mode -->
+                
+                    
+                </div>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container Utama -->
+    <div class="container my-4">
+        <div class="row">
+            <!-- Sidebar Daftar Bab -->
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-book-half"></i> Daftar Bab</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush" id="daftar-bab">
+                            <li class="list-group-item text-center text-muted">Memuat daftar bab...</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Info Progres Bacaan -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-bookmark-check"></i> Progres Bacaan</h5>
+                    </div>
+                    <div class="card-body">
+                        <p id="progres-info" class="mb-1">Terakhir dibaca: <span class="fw-semibold">- Belum ada data -</span></p>
+                        <button id="reset-progres-btn" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Hapus Progres</button>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Area Baca Konten Novel -->
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 id="judul-bab" class="mb-0">Silakan pilih bab untuk membaca</h4>
+                       
+                       
+                    </div>
+                    <button id="prev-bab-btn" class="btn btn-primary">
+        <i class="bi bi-chevron-left"></i></button>
+                    <div class="card-body p-4" id="konten-novel">
+                      
+                        <p class="text-center text-muted">Konten bab akan muncul di sini</p>
+                    
+                    
+                    </div>
+                    
+                    
+                    <div>
+                    
+   
+    
+    </div>
+  
+    <button id="next-bab-btn" class="btn btn-primary">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+                </div>
+                <!-- Info Pencarian -->
+                <div class="mt-2 text-end" id="search-info"></div>
+            </div>
+            
+            
+             <!-- Navigasi Antar Bab -->
+             <!-- Tambahkan ini setelah area konten novel (misal di bawah div.container) 
+<div class="floating-nav-bab">
+    <button id="prev-bab-btn" class="btn btn-primary floating-nav-btn disabled" disabled>
+        <i class="bi bi-chevron-left"></i>
+    </button>
+    <button id="next-bab-btn" class="btn btn-primary floating-nav-btn disabled" disabled>
+        <i class="bi bi-chevron-right"></i>
+    </button>
+</div>
+-->
+        </div>
+        
+    </div>
+
+
+
+
+
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variabel Global
+        let kontenSaatIni = "";
+        let babAktifIndex = -1;
+        const temaKey = "novel-tema";
+        const progresKey = "novel-progres";
+        
+        // Elemen DOM
+        const htmlElement = document.documentElement;
+        const daftarBabElement = document.getElementById('daftar-bab');
+        const judulBabElement = document.getElementById('judul-bab');
+        const kontenNovelElement = document.getElementById('konten-novel');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+     //   const clearSearchBtn = document.getElementById('clear-search-btn');
+        const searchInfoElement = document.getElementById('search-info');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const prevBabBtn = document.getElementById('prev-bab-btn');
+        const nextBabBtn = document.getElementById('next-bab-btn');
+        const progresInfoElement = document.getElementById('progres-info');
+        const resetProgresBtn = document.getElementById('reset-progres-btn');
+
+        // Daftar Bab (Sesuaikan dengan file kamu!)
+        const daftarBab = [
+            { namaFile: 'bab-1.txt', judul: 'Bab 1: Awal Perjalanan' },
+            { namaFile: 'bab-2.txt', judul: 'Bab 2: Rahasia di Hutan' },
+            { namaFile: 'bab-3.txt', judul: 'Bab 3: Pertemuan Tak Terduga' },
+            { namaFile: 'bab-4.txt', judul: 'Bab 4: Perang di Kota Tua' }
+        ];
+
+        // --- Fungsi Dark Mode ---
+        function initDarkMode() {
+            const temaSimpan = localStorage.getItem(temaKey) || "light";
+            htmlElement.setAttribute("data-bs-theme", temaSimpan);
+            updateDarkModeTombol(temaSimpan);
+        }
+
+        function updateDarkModeTombol(tema) {
+            if (tema === "dark") {
+                darkModeToggle.innerHTML = '<i class="bi bi-sun-fill"></i>';
+            } else {
+                darkModeToggle.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
+            }
+        }
+
+        function toggleDarkMode() {
+            const temaSekarang = htmlElement.getAttribute("data-bs-theme");
+            const temaBaru = temaSekarang === "light" ? "dark" : "light";
+            htmlElement.setAttribute("data-bs-theme", temaBaru);
+            localStorage.setItem(temaKey, temaBaru);
+            updateDarkModeTombol(temaBaru);
+        }
+
+        // --- Fungsi Daftar & Navigasi Bab ---
+        function muatDaftarBab() {
+            daftarBabElement.innerHTML = "";
+            daftarBab.forEach((bab, index) => {
+                const li = document.createElement('li');
+                li.className = `list-group-item bab-item ${index === babAktifIndex ? 'bab-aktif' : ''}`;
+                li.textContent = bab.judul;
+                li.addEventListener('click', () => muatKontenBab(index));
+                daftarBabElement.appendChild(li);
+            });
+        }
+
+        function updateNavigasiBab() {
+            // Aktifkan/nonaktifkan tombol navigasi
+            prevBabBtn.disabled = (babAktifIndex <= 0);
+            nextBabBtn.disabled = (babAktifIndex >= daftarBab.length - 1);
+            prevBabBtn.classList.toggle('disabled', babAktifIndex <= 0);
+            nextBabBtn.classList.toggle('disabled', babAktifIndex >= daftarBab.length - 1);
+        }
+
+        // --- Fungsi Fetch & Tampilan Konten ---
+        async function muatKontenBab(index) {
+            if (index < 0 || index >= daftarBab.length) return;
+            
+            try {
+                const bab = daftarBab[index];
+                const response = await fetch(`bab-novel/${bab.namaFile}`);
+                if (!response.ok) throw new Error('Bab tidak ditemukan');
+                
+                // Update variabel global
+                kontenSaatIni = await response.text();
+                babAktifIndex = index;
+                
+                // Tampilkan konten
+                judulBabElement.textContent = bab.judul;
+                tampilkanKonten(kontenSaatIni);
+                resetPencarian();
+                
+                // Update UI
+                muatDaftarBab();
+                updateNavigasiBab();
+                simpanProgresBacaan(index);
+                tampilkanProgresBacaan();
+            } catch (error) {
+                kontenNovelElement.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+            }
+        }
+
+        function tampilkanKonten(konten) {
+            const kontenDiformat = konten.split('\n').filter(baris => baris.trim() !== "").map(baris => `<p>${baris}</p>`).join('');
+            kontenNovelElement.innerHTML = kontenDiformat;
+        }
+
+        // --- Fungsi Pencarian ---
+        function cariKata(kataKunci) {
+            if (!kontenSaatIni || kataKunci.trim() === "") {
+                resetPencarian();
+                return;
+            }
+
+            const kataEscape = kataKunci.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${kataEscape})`, 'gi');
+            const kontenDenganHighlight = kontenSaatIni.replace(regex, '<span class="search-highlight">$1</span>');
+            
+            const kontenDiformat = kontenDenganHighlight.split('\n').filter(baris => baris.trim() !== "").map(baris => `<p>${baris}</p>`).join('');
+            kontenNovelElement.innerHTML = kontenDiformat;
+
+            const jumlahKemunculan = (kontenSaatIni.match(regex) || []).length;
+            searchInfoElement.textContent = jumlahKemunculan > 0 ? `Ditemukan ${jumlahKemunculan} hasil` : 'Tidak ada hasil ditemukan';
+        }
+
+        function resetPencarian() {
+            searchInput.value = "";
+            searchInfoElement.textContent = "";
+            tampilkanKonten(kontenSaatIni);
+        }
+
+        // --- Fungsi Penyimpanan Progres ---
+        function simpanProgresBacaan(index) {
+            const progres = {
+                index: index,
+                judul: daftarBab[index].judul,
+                tanggal: new Date().toLocaleDateString('id-ID')
+            };
+            localStorage.setItem(progresKey, JSON.stringify(progres));
+        }
+
+        function tampilkanProgresBacaan() {
+            const progresSimpan = JSON.parse(localStorage.getItem(progresKey));
+            if (progresSimpan) {
+                progresInfoElement.innerHTML = `Terakhir dibaca: <span class="fw-semibold">${progresSimpan.judul} (${progresSimpan.tanggal})</span>`;
+                // Muat bab terakhir jika belum ada bab aktif
+                if (babAktifIndex === -1) {
+                    muatKontenBab(progresSimpan.index);
+                }
+            } else {
+                progresInfoElement.innerHTML = 'Terakhir dibaca: <span class="fw-semibold">- Belum ada data -</span>';
+            }
+        }
+
+        function resetProgresBacaan() {
+            if (confirm("Apakah kamu yakin ingin menghapus data progres bacaan?")) {
+                localStorage.removeItem(progresKey);
+                tampilkanProgresBacaan();
+                babAktifIndex = -1;
+                muatDaftarBab();
+                judulBabElement.textContent = "Silakan pilih bab untuk membaca";
+                kontenNovelElement.innerHTML = "<p class='text-center text-muted'>Konten bab akan muncul di sini</p>";
+                updateNavigasiBab();
+            }
+        }
+
+        // --- Event Listener ---
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+        prevBabBtn.addEventListener('click', () => {
+    // Gulir otomatis ke atas halaman sebelum memuat bab berikutnya
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Animasi gulir halus
+    });
+    // Beri jeda sedikit agar animasi gulir selesai sebelum memuat bab baru
+    setTimeout(() => {
+        muatKontenBab(babAktifIndex - 1);
+    }, 300); // Waktu jeda 300ms (sesuaikan jika perlu)
+});
+       
+       
+       
+       
+        nextBabBtn.addEventListener('click', () => {
+    // Gulir otomatis ke atas halaman sebelum memuat bab berikutnya
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Animasi gulir halus
+    });
+    // Beri jeda sedikit agar animasi gulir selesai sebelum memuat bab baru
+    setTimeout(() => {
+        muatKontenBab(babAktifIndex + 1);
+    }, 300); // Waktu jeda 300ms (sesuaikan jika perlu)
+});
+        searchBtn.addEventListener('click', () => cariKata(searchInput.value));
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') cariKata(searchInput.value); });
+        
+      //  clearSearchBtn.addEventListener('click', resetPencarian);
+        
+        resetProgresBtn.addEventListener('click', resetProgresBacaan);
+
+        // --- Inisialisasi Halaman ---
+        initDarkMode();
+        muatDaftarBab();
+        tampilkanProgresBacaan();
+        updateNavigasiBab();
+    </script>
+    <!-- SECTION KOMENTAR -->
+      <div id="waline"></div>   
+    
+
+    <!-- js waline -->
+
+    <script type="module"> import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js'; init({ el: '#waline', serverURL: 'https://wl-c.vercel.app', lang: 'en', }); </script>
+  
+  
+    <!-- Footer Profesional -->
+<footer>
+        
+        <!-- Garis Pembatas & Copyright Bawah -->
+        <hr class="border-secondary-subtle mt-4 mb-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="text-muted small mb-2 mb-md-0">Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> menggunakan Bootstrap 5</p>
+            </div>
+            
+            <div class="d-flex gap-3">
+                <a href="https://www.instagram.com" class="text-muted hover:text-white"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.x.com" class="text-muted hover:text-white"><i class="bi bi-twitter-x"></i></a>
+                <a href="https://www.facebook.com" class="text-muted hover:text-white"><i class="bi bi-facebook"></i></a>
+            </div>
+        
+    
+</footer>
+
+    
+</body>
+</html>
