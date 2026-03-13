@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Pollinations AI Mobile - dengan Riwayat</title>
+    <style>
+        /* Gaya sederhana agar nyaman di layar ponsel */
+        body { 
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 16px; 
+            background: #f4f4f5; 
+        }
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+        }
+        h2 { 
+            margin-bottom: 8px; 
+            color: #1a1a1a;
+        }
+        .subtitle {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #666;
+            font-size: 14px;
+        }
+        textarea, select, button { 
+            font-size: 16px; 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 12px; 
+            border: 1px solid #ccc; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            background: white; 
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        button { 
+            background-color: #0055ff; 
+            color: white; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            transition: background-color 0.2s;
+        }
+        button:active { 
+            background-color: #003cb3; 
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:active {
+            background-color: #545b62;
+        }
+        button.small {
+            padding: 8px 12px;
+            font-size: 14px;
+            width: auto;
+            margin: 0;
+        }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .button-group button {
+            margin-bottom: 0;
+            flex: 1;
+        }
+        .result-container {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .result-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+        .result-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .result-area { 
+            padding: 16px; 
+            min-height: 150px; 
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .loading { 
+            color: #666; 
+            font-style: italic; 
+        }
+        .info-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: -8px;
+            margin-bottom: 12px;
+        }
+        optgroup {
+            font-weight: 600;
+            color: #333;
+        }
+        optgroup option {
+            font-weight: normal;
+            padding-left: 20px;
+        }
+        
+        /* Style untuk riwayat chat */
+        .history-section {
+            margin-top: 20px;
+            border-top: 2px solid #ddd;
+            padding-top: 16px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .history-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+        .history-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item:hover {
+            background-color: #f0f0f0;
+        }
+        .history-item:active {
+            background-color: #e0e0e0;
+        }
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .history-model {
+            font-size: 12px;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #495057;
+            font-weight: 500;
+        }
+        .history-time {
+            font-size: 11px;
+            color: #868e96;
+        }
+        .history-prompt {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #212529;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-preview {
+            font-size: 13px;
+            color: #495057;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .empty-history {
+            padding: 20px;
+            text-align: center;
+            color: #868e96;
+            font-style: italic;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            animation: fadeInOut 2s ease;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+    </style>
+    
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v3/dist/waline.css"
+  />
+    
+</head>
+<body>
+    <div class="container">
+        <h2>🌼 Text AI Mobile</h2>
+        <p class="subtitle">Dengan riwayat chat di browser (local storage)</p>
+
+        <textarea id="promptInput" rows="4" placeholder="Masukkan prompt Anda di sini..."></textarea>
+
+        <select id="modelSelect">
+            <!-- Keluarga OpenAI -->
+            <optgroup label="🤖 OpenAI">
+                <option value="openai">OpenAI (Default)</option>
+                <option value="openai-fast">OpenAI Fast</option>
+                <option value="openai-large">OpenAI Large</option>
+                <option value="openai-reasoning">OpenAI Reasoning</option>
+                <option value="openai-audio">OpenAI Audio</option>
+                <option value="gpt-5-nano">GPT-5 Nano</option>
+                <option value="gpt-5-nano-2025-08-07">GPT-5 Nano (2025-08-07)</option>
+                <option value="gpt-5.2">GPT-5.2</option>
+                <option value="gpt-5.2-reasoning">GPT-5.2 Reasoning</option>
+                <option value="gpt-4o-mini-audio-preview">GPT-4o Mini Audio</option>
+                <option value="gpt-4o-mini-audio-preview-2024-12-17">GPT-4o Mini Audio (2024-12-17)</option>
+            </optgroup>
+
+            <!-- Keluarga Gemini -->
+            <optgroup label="✨ Gemini">
+                <option value="gemini">Gemini</option>
+                <option value="gemini-fast">Gemini Fast</option>
+                <option value="gemini-large">Gemini Large</option>
+                <option value="gemini-search">Gemini Search</option>
+                <option value="gemini-3-pro-preview">Gemini 3 Pro Preview</option>
+                <option value="gemini-legacy">Gemini Legacy</option>
+                <option value="gemini-3-flash">Gemini 3 Flash</option>
+                <option value="gemini-3-flash-preview">Gemini 3 Flash Preview</option>
+                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
+                <option value="gemini-2.5-flash-search">Gemini 2.5 Flash Search</option>
+                <option value="gemini-2.5-flash-lite-search">Gemini 2.5 Flash Lite Search</option>
+                <option value="gemini-3.1-pro">Gemini 3.1 Pro</option>
+                <option value="gemini-3-pro">Gemini 3 Pro</option>
+                <option value="gemini-3">Gemini 3</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+            </optgroup>
+
+            <!-- Keluarga Claude (Anthropic) -->
+            <optgroup label="🦜 Claude">
+                <option value="claude-fast">Claude Fast</option>
+                <option value="claude">Claude</option>
+                <option value="claude-large">Claude Large</option>
+                <option value="claude-legacy">Claude Legacy</option>
+                <option value="claude-airforce">Claude Airforce</option>
+                <option value="claude-haiku-4.5">Claude Haiku 4.5</option>
+                <option value="claude-haiku">Claude Haiku</option>
+                <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
+                <option value="claude-sonnet">Claude Sonnet</option>
+                <option value="claude-opus-4.6">Claude Opus 4.6</option>
+                <option value="claude-opus">Claude Opus</option>
+                <option value="claude-opus-4.5">Claude Opus 4.5</option>
+                <option value="claude-large-legacy">Claude Large Legacy</option>
+            </optgroup>
+
+            <!-- Keluarga Deepseek -->
+            <optgroup label="🔍 Deepseek">
+                <option value="deepseek">Deepseek</option>
+                <option value="deepseek-v3">Deepseek V3</option>
+                <option value="deepseek-reasoning">Deepseek Reasoning</option>
+            </optgroup>
+
+            <!-- Keluarga Qwen -->
+            <optgroup label="🐉 Qwen">
+                <option value="qwen-coder">Qwen Coder</option>
+                <option value="qwen-safety">Qwen Safety</option>
+                <option value="qwen-character">Qwen Character</option>
+                <option value="qwen3-coder">Qwen 3 Coder</option>
+                <option value="qwen3-coder-30b-a3b-instruct">Qwen 3 Coder 30B A3B Instruct</option>
+                <option value="qwen3guard-gen-8b">Qwen 3 Guard Gen 8B</option>
+            </optgroup>
+
+            <!-- Keluarga Mistral -->
+            <optgroup label="🌪️ Mistral">
+                <option value="mistral">Mistral</option>
+                <option value="mistral-small">Mistral Small</option>
+                <option value="mistral-small-3.2">Mistral Small 3.2</option>
+                <option value="mistral-small-3.2-24b-instruct-2506">Mistral Small 3.2 24B Instruct</option>
+            </optgroup>
+
+            <!-- Keluarga Grok (xAI) -->
+            <optgroup label="🚀 Grok">
+                <option value="grok">Grok</option>
+                <option value="grok-fast">Grok Fast</option>
+                <option value="grok-4">Grok 4</option>
+                <option value="grok-4-fast">Grok 4 Fast</option>
+            </optgroup>
+
+            <!-- Keluarga Perplexity -->
+            <optgroup label="🔎 Perplexity">
+                <option value="perplexity-fast">Perplexity Fast</option>
+                <option value="perplexity-reasoning">Perplexity Reasoning</option>
+                <option value="sonar">Sonar</option>
+                <option value="sonar-reasoning">Sonar Reasoning</option>
+                <option value="sonar-reasoning-pro">Sonar Reasoning Pro</option>
+            </optgroup>
+
+            <!-- Keluarga Kimi -->
+            <optgroup label="📱 Kimi">
+                <option value="kimi">Kimi</option>
+                <option value="kimi-k2.5">Kimi K2.5</option>
+                <option value="kimi-k2p5">Kimi K2P5</option>
+                <option value="kimi-reasoning">Kimi Reasoning</option>
+                <option value="kimi-large">Kimi Large</option>
+            </optgroup>
+
+            <!-- Keluarga Amazon Nova -->
+            <optgroup label="🌩️ Amazon Nova">
+                <option value="amazon-nova-micro">Amazon Nova Micro</option>
+                <option value="nova">Nova</option>
+                <option value="nova-micro">Nova Micro</option>
+                <option value="nova-fast">Nova Fast</option>
+            </optgroup>
+
+            <!-- Keluarga GLM -->
+            <optgroup label="📊 GLM">
+                <option value="glm">GLM</option>
+                <option value="glm-5">GLM 5</option>
+                <option value="glm-4.7">GLM 4.7</option>
+                <option value="glm-4p7">GLM 4P7</option>
+            </optgroup>
+
+            <!-- Keluarga Minimax -->
+            <optgroup label="🎯 Minimax">
+                <option value="minimax">Minimax</option>
+                <option value="minimax-m2.5">Minimax M2.5</option>
+                <option value="minimax-m2p5">Minimax M2P5</option>
+            </optgroup>
+
+            <!-- Layanan & Tools -->
+            <optgroup label="🛠️ Layanan & Tools">
+                <option value="midijourney">Midijourney</option>
+                <option value="web-scrape">Web Scrape</option>
+                <option value="web-research">Web Research</option>
+            </optgroup>
+
+            <!-- Pollinations & Polly -->
+            <optgroup label="⚡ Pollinations">
+                <option value="pollinations-ai">Pollinations AI</option>
+                <option value="polly">Polly</option>
+                <option value="polly-ai">Polly AI</option>
+            </optgroup>
+
+            <!-- Step & Lainnya -->
+            <optgroup label="📌 Step & Lainnya">
+                <option value="step-3.5-flash">Step 3.5 Flash</option>
+                <option value="step-flash">Step Flash</option>
+                <option value="step-3.5">Step 3.5</option>
+                <option value="nomnom">Nomnom</option>
+            </optgroup>
+        </select>
+
+        <!-- GANTI 'API_KEY_ANDA' DENGAN KUNCI PUBLIK ANDA -->
+        <input type="hidden" id="apiKeyInput" value="pk_ugVn71wduzdIJqsx">
+
+        <div class="button-group">
+            <button id="sendButton">Kirim ke AI</button>
+            <button id="clearButton" class="secondary">Clear</button>
+        </div>
+
+        <!-- Area Hasil dengan Tombol Salin -->
+        <div class="result-container">
+            <div class="result-header">
+                <h3>Hasil AI</h3>
+                <div class="result-actions">
+                    <button id="copyButton" class="small secondary">📋 Salin</button>
+                </div>
+            </div>
+            <div id="result" class="result-area">Respons AI akan muncul di sini...</div>
+        </div>
+
+        <!-- Riwayat Chat -->
+        <div class="history-section">
+            <div class="history-header">
+                <h3>📜 Riwayat Chat</h3>
+                <button id="clearHistoryButton" class="small secondary">Hapus Riwayat</button>
+            </div>
+            <div id="historyList" class="history-list">
+                <div class="empty-history">Belum ada riwayat chat</div>
+            </div>
+        </div>
+        
+        
+    </div>
+              
+          <h2> KOMENTAR </h2>
+        <p class="subtitle">Tanpa login a.k.a ribet (anonim)</p>    
+              <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://wl-c.vercel.app',
+      lang: 'en',
+    });
+  </script>
+    
+              
+              
+              
+    <!-- Toast notification -->
+    <div id="toast" class="toast" style="display: none;">Teks disalin!</div>
+
+    <script>
+        // ==================== ELEMEN DOM ====================
+        const promptInput = document.getElementById('promptInput');
+        const modelSelect = document.getElementById('modelSelect');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const sendButton = document.getElementById('sendButton');
+        const clearButton = document.getElementById('clearButton');
+        const copyButton = document.getElementById('copyButton');
+        const clearHistoryButton = document.getElementById('clearHistoryButton');
+        const resultDiv = document.getElementById('result');
+        const historyListDiv = document.getElementById('historyList');
+        const toast = document.getElementById('toast');
+
+        // ==================== KONFIGURASI ====================
+        const STORAGE_KEY = 'pollinations_chat_history';
+        const MAX_HISTORY = 50; // Maksimal 50 item riwayat
+
+        // ==================== DATA RIWAYAT ====================
+        let chatHistory = [];
+
+        // ==================== FUNGSI UTILITY ====================
+        
+        // Menampilkan toast notification
+        function showToast(message, duration = 2000) {
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, duration);
+        }
+
+        // Mendapatkan waktu sekarang dalam format yang mudah dibaca
+        function getCurrentTime() {
+            const now = new Date();
+            return {
+                iso: now.toISOString(),
+                display: now.toLocaleString('id-ID', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+        }
+
+        // ==================== FUNGSI RIWAYAT ====================
+        
+        // Memuat riwayat dari localStorage
+        function loadHistory() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    chatHistory = JSON.parse(saved);
+                } else {
+                    chatHistory = [];
+                }
+            } catch (e) {
+                console.error('Gagal memuat riwayat:', e);
+                chatHistory = [];
+            }
+            renderHistory();
+        }
+
+        // Menyimpan riwayat ke localStorage
+        function saveHistory() {
+            try {
+                // Batasi jumlah riwayat
+                if (chatHistory.length > MAX_HISTORY) {
+                    chatHistory = chatHistory.slice(0, MAX_HISTORY);
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory));
+            } catch (e) {
+                console.error('Gagal menyimpan riwayat:', e);
+                showToast('Gagal menyimpan riwayat', 1500);
+            }
+        }
+
+        // Menambahkan item baru ke riwayat
+        function addToHistory(prompt, model, response) {
+            const time = getCurrentTime();
+            const newItem = {
+                id: Date.now().toString(), // ID unik berdasarkan timestamp
+                prompt: prompt,
+                model: model,
+                response: response,
+                timestamp: time.iso,
+                displayTime: time.display
+            };
+            
+            chatHistory.unshift(newItem); // Tambahkan di awal array
+            
+            // Batasi jumlah riwayat
+            if (chatHistory.length > MAX_HISTORY) {
+                chatHistory = chatHistory.slice(0, MAX_HISTORY);
+            }
+            
+            saveHistory();
+            renderHistory();
+        }
+
+        // Menghapus semua riwayat
+        function clearHistory() {
+            if (confirm('Hapus semua riwayat chat?')) {
+                chatHistory = [];
+                localStorage.removeItem(STORAGE_KEY);
+                renderHistory();
+                showToast('Riwayat dihapus', 1000);
+            }
+        }
+        
+        // Merender riwayat ke HTML
+        function renderHistory() {
+            if (!historyListDiv) return;
+            
+            if (chatHistory.length === 0) {
+                historyListDiv.innerHTML = '<div class="empty-history">Belum ada riwayat chat</div>';
+                return;
+            }
+            
+            let html = '';
+            chatHistory.forEach(item => {
+                // Batasi preview response (maks 60 karakter)
+                const responsePreview = item.response.length > 60 
+                    ? item.response.substring(0, 60) + '...' 
+                    : item.response;
+                
+                html += `
+                    <div class="history-item" data-id="${item.id}">
+                        <div class="history-item-header">
+                            <span class="history-model">${item.model}</span>
+                            <span class="history-time">${item.displayTime}</span>
+                        </div>
+                        <div class="history-prompt">${escapeHtml(item.prompt)}</div>
+                        <div class="history-preview">${escapeHtml(responsePreview)}</div>
+                    </div>
+                `;
+            });
+            
+            historyListDiv.innerHTML = html;
+            
+            // Tambahkan event listener ke setiap item riwayat
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = item.dataset.id;
+                    loadHistoryItem(id);
+                });
+            });
+        }
+
+        // Fungsi untuk meng-escape HTML (mencegah XSS)
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Memuat item riwayat ke form
+        function loadHistoryItem(id) {
+            const item = chatHistory.find(i => i.id === id);
+            if (item) {
+                promptInput.value = item.prompt;
+                modelSelect.value = item.model;
+                resultDiv.innerText = item.response;
+                resultDiv.classList.remove('loading');
+                showToast('Riwayat dimuat', 1000);
+            }
+        }
+
+        // ==================== FUNGSI UTAMA ====================
+        
+        // Mengirim prompt ke API
+        async function sendPrompt() {
+            const prompt = promptInput.value.trim();
+            const model = modelSelect.value;
+            const apiKey = apiKeyInput.value;
+
+            if (!prompt) {
+                resultDiv.innerText = '❌ Prompt tidak boleh kosong.';
+                return;
+            }
+
+            if (!apiKey || apiKey === 'API_KEY_ANDA') {
+                resultDiv.innerText = '❌ Harap masukkan API Key yang benar.';
+                return;
+            }
+
+            // Tampilkan status loading
+            resultDiv.innerText = '⏳ Mengirim permintaan...';
+            resultDiv.classList.add('loading');
+
+            // Encode prompt agar aman dimasukkan ke URL
+            const encodedPrompt = encodeURIComponent(prompt);
+
+            // Susun URL sesuai format
+            const url = `https://gen.pollinations.ai/text/${encodedPrompt}?model=${model}&key=${apiKey}`;
+
+            try {
+                // Lakukan fetch ke API
+                const response = await fetch(url);
+
+                // Periksa apakah respons sukses
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+                }
+
+                // Ambil teks respons
+                const text = await response.text();
+
+                // Tampilkan hasil
+                resultDiv.innerText = text;
+                resultDiv.classList.remove('loading');
+                
+                // Simpan ke riwayat
+                addToHistory(prompt, model, text);
+                
+            } catch (error) {
+                resultDiv.innerText = `❌ Gagal: ${error.message}`;
+                resultDiv.classList.remove('loading');
+                console.error('Fetch error:', error);
+            }
+        }
+
+        // Membersihkan input dan hasil
+        function clearInput() {
+            promptInput.value = '';
+            resultDiv.innerText = 'Respons AI akan muncul di sini...';
+            resultDiv.classList.remove('loading');
+        }
+
+        // Menyalin hasil ke clipboard
+        async function copyResult() {
+            const text = resultDiv.innerText;
+            
+            // Jangan salin jika masih loading atau pesan default
+            if (text === '⏳ Mengirim permintaan...' || 
+                text === 'Respons AI akan muncul di sini...' ||
+                text.startsWith('❌')) {
+                showToast('Tidak ada hasil untuk disalin', 1500);
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('✅ Teks disalin!', 1500);
+            } catch (err) {
+                console.error('Gagal menyalin:', err);
+                showToast('❌ Gagal menyalin', 1500);
+            }
+        }
+
+        // ==================== INISIALISASI ====================
+        
+        // Muat riwayat saat halaman dimuat
+        loadHistory();
+
+        // ==================== EVENT LISTENERS ====================
+        sendButton.addEventListener('click', sendPrompt);
+        clearButton.addEventListener('click', clearInput);
+        copyButton.addEventListener('click', copyResult);
+        clearHistoryButton.addEventListener('click', clearHistory);
+
+        // Izinkan tekan Enter untuk mengirim (tapi Shift+Enter untuk baris baru)
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Cegah baris baru
+                sendPrompt();
+            }
+        });
+
+        // ==================== CATATAN API KEY ====================
+        // Jangan lupa ganti 'API_KEY_ANDA' dengan kunci publik Anda!
+    </script>
+</body>
+</html>
+
+ 
